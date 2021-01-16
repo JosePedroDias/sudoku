@@ -20,3 +20,15 @@ export function repeated(arr) {
     found[v] = i;
   }
 }
+
+export function obj2map(o) {
+  return new Map(Object.entries(o));
+}
+
+export function map2obj(m) {
+  const o = {};
+  for (let k of m.keys()) {
+    o[k] = m.get(k);
+  }
+  return o;
+}

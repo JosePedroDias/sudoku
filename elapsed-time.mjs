@@ -22,8 +22,8 @@ export class ElapsedTime {
     clearInterval(this.timer);
   }
 
-  reset() {
-    this.dt = 0;
+  reset(dt) {
+    this.dt = dt || 0;
     this.startDate = new Date(Date.now() - this.dt * 1000);
     this.draw();
   }

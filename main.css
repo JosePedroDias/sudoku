@@ -64,10 +64,10 @@ html, body {
 .action {
     display: inline-block;
     text-align: center;
-    width: 4em;
-    height: 4em;
-    line-height: 4em;
-    font-size: 30px;
+    width: 3em;
+    height: 3em;
+    line-height: 3em;
+    font-size: 22px;
     background-color: #DDD;
     margin: 0.2em;
     border-radius: 10px;

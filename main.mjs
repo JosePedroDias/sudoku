@@ -1,4 +1,5 @@
-import { rndInt } from './utils.mjs';
+import { obj2map, map2obj } from './utils.mjs';
+import { storageFactory } from './storage.mjs';
 import { ElapsedTime } from './elapsed-time.mjs';
 import { Board } from './board.mjs';
 import { generateNumbers } from './numbers.mjs';
@@ -7,12 +8,13 @@ import { repeated } from './utils.mjs';
 
 const boardWidth = 720 * 0.8;
 
+const storage = storageFactory('sdku');
+
 function getCellData(pos) {
-  //const value = undefined;
+  const value = undefined;
+  //const value = rndInt(3) === 0 ? rndInt(9) + 1 : undefined;
 
   const hints = [];
-  const value = rndInt(3) === 0 ? rndInt(9) + 1 : undefined;
-
   /*for (let n = 1; n <= 9; ++n) {
     if (rndInt(3) === 0) {
       hints.push(n);
@@ -110,23 +112,53 @@ function check() {
   return ok;
 }
 
+function load() {
+  const dt = storage.getItem('time');
+  et.reset(dt);
+  const st = obj2map(storage.getItem('state'));
+  history = [st];
+  b.setState(st);
+  b.draw();
+}
+
+function save() {
+  storage.setItem('time', et.dt);
+  storage.setItem('state', map2obj(b.getState()));
+}
+
+function restart() {
+  history = [history[0]];
+  b.setState(history[0]);
+  b.draw();
+}
+
+function undo() {
+  if (history.length < 2) {
+    return;
+  }
+  history.pop();
+  b.setState(history[history.length - 1]);
+  b.draw();
+}
+
+function hint() {
+  actions.get('hint').toggle();
+  inHintMode = !inHintMode;
+}
+
 function onAction(action) {
   if (action === 'hint') {
-    actions.get('hint').toggle();
-    inHintMode = !inHintMode;
+    hint();
   } else if (action === 'undo') {
-    if (history.length < 2) {
-      return;
-    }
-    history.pop();
-    b.setState(history[history.length - 1]);
-    b.draw();
+    undo();
+  } else if (action === 'load') {
+    load();
+  } else if (action === 'save') {
+    save();
   } else if (action === 'check') {
     check();
   } else if (action === 'restart') {
-    history = [history[0]];
-    b.setState(history[0]);
-    b.draw();
+    restart();
   }
 }
 

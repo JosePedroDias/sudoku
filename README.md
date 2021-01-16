@@ -19,6 +19,6 @@
 
 ## TODO
 
-- save/load
+- keyboard support (numbers + navigation)
 - pause
 - resolution independent
