@@ -1,5 +1,6 @@
 import { obj2map, map2obj } from './utils.mjs';
 import { storageFactory } from './storage.mjs';
+import { hasModifiers, KEYS } from './keys.mjs';
 import { ElapsedTime } from './elapsed-time.mjs';
 import { Board } from './board.mjs';
 import { generateNumbers } from './numbers.mjs';
@@ -161,6 +162,70 @@ function onAction(action) {
     restart();
   }
 }
+
+document.body.addEventListener('keydown', (ev) => {
+  if (hasModifiers(ev)) {
+    return;
+  }
+  //console.log(ev.code);
+  switch (ev.code) {
+    case 'ArrowLeft':
+      if (lastPos[0] > 1) {
+        --lastPos[0];
+      }
+      break;
+    case 'ArrowRight':
+      if (lastPos[0] < 9) {
+        ++lastPos[0];
+      }
+      break;
+    case 'ArrowUp':
+      if (lastPos[1] > 1) {
+        --lastPos[1];
+      }
+      break;
+    case 'ArrowDown':
+      if (lastPos[1] < 9) {
+        ++lastPos[1];
+      }
+      break;
+    case 'Space':
+      hint();
+      break;
+    case 'KeyL':
+      load();
+      break;
+    case 'KeyS':
+      save();
+      break;
+    case 'KeyR':
+      restart();
+      break;
+    case 'KeyU':
+      undo();
+      break;
+    case 'KeyC':
+      check();
+      break;
+    case 'Digit1':
+    case 'Digit2':
+    case 'Digit3':
+    case 'Digit4':
+    case 'Digit5':
+    case 'Digit6':
+    case 'Digit7':
+    case 'Digit8':
+    case 'Digit9':
+      const value = parseInt(ev.code.substring(5));
+      onNumber(value);
+      break;
+    default:
+      return;
+  }
+  ev.stopPropagation();
+  ev.preventDefault();
+  b.draw();
+});
 
 numbers = generateNumbers(document.querySelector('.numbers'), onNumber);
 actions = generateActions(document.querySelector('.actions'), onAction);

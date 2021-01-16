@@ -19,6 +19,6 @@
 
 ## TODO
 
-- keyboard support (numbers + navigation)
+- bug hint/set-unset
 - pause
 - resolution independent
