@@ -1,6 +1,14 @@
-import { rndColor } from './utils.mjs';
+import { rndInt } from './utils.mjs';
+
+const PI2 = 2 * Math.PI;
 
 const FONT = 'sans-serif';
+
+const GRID_COLOR = '#696';
+const BG_COLOR = '#FFF';
+const BG_SELECTED_COLOR = '#669';
+const NUMBER_COLOR = '#000';
+const NUMBER_SELECTED_COLOR = '#FFF';
 
 function hashPos(pos) {
   return pos.join(',');
@@ -32,6 +40,8 @@ export class Board {
 
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
+    this.ctx.lineCap = 'round';
+    this.ctx.lineJoin = 'round';
 
     this.draw();
 
@@ -47,9 +57,27 @@ export class Board {
   }
 
   draw(selectedNumber) {
-    this.ctx.clearRect(0, 0, this.boardWidth, this.boardWidth);
+    const c = this.ctx;
+    const cw = this.cellWidth;
+
+    c.fillStyle = BG_COLOR;
+    c.fillRect(0, 0, this.boardWidth, this.boardWidth);
+
+    c.strokeStyle = GRID_COLOR;
+    c.lineWidth = this.boardWidth / 400;
+    const g = 0.1;
+    c.moveTo(cw * (0 + g), cw * 3);
+    c.lineTo(cw * (9 - g), cw * 3);
+    c.moveTo(cw * (0 + g), cw * 6);
+    c.lineTo(cw * (9 - g), cw * 6);
+    c.moveTo(cw * 3, cw * (0 + g));
+    c.lineTo(cw * 3, cw * (9 - g));
+    c.moveTo(cw * 6, cw * (0 + g));
+    c.lineTo(cw * 6, cw * (9 - g));
+    c.stroke();
+
     for (let cell of this.cells.values()) {
-      cell.draw(this.ctx, selectedNumber);
+      cell.draw(c, selectedNumber);
     }
   }
 
@@ -114,16 +142,23 @@ class Cell {
     const w = this.width;
     const x0 = w * this.position[0];
     const y0 = w * this.position[1];
-    ctx.fillStyle = rndColor();
-    ctx.fillRect(x0, y0, w, w);
+
+    const isSelected = false; //rndInt(2) === 0;
+
+    if (isSelected) {
+      ctx.fillStyle = BG_SELECTED_COLOR;
+      ctx.beginPath();
+      ctx.arc(x0 + w * 0.5, y0 + w * 0.5, w * 0.46, 0, PI2);
+      ctx.fill();
+    }
+
+    ctx.fillStyle = isSelected ? NUMBER_SELECTED_COLOR : NUMBER_COLOR;
 
     if (this.value) {
       ctx.font = this.fontV;
-      ctx.fillStyle = rndColor();
       ctx.fillText(this.value, x0 + w * 0.5, y0 + w * 0.57);
     } else {
       ctx.font = this.fontH;
-      ctx.fillStyle = rndColor();
       for (let hint of this.hints) {
         const y = Math.floor((hint - 1) / 3);
         const x = (hint - 1) % 3;
