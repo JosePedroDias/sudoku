@@ -1,9 +1,10 @@
-import { Board } from './board.mjs';
 import { rndInt } from './utils.mjs';
+import { ElapsedTime } from './elapsed-time.mjs';
+import { Board } from './board.mjs';
+import { generateNumbers } from './numbers.mjs';
+import { generateActions } from './actions.mjs';
 
-const containerEl = document.querySelector('.main');
-
-const boardWidth = 720;
+const boardWidth = 720 * 0.8;
 
 function getCellData(pos) {
   const value = rndInt(2) === 0 ? rndInt(9) + 1 : undefined;
@@ -33,5 +34,30 @@ function onClick(pos) {
   b.draw();
 }
 
-b = new Board(containerEl, boardWidth, { getCellData, onClick });
+b = new Board(document.querySelector('.board'), boardWidth, {
+  getCellData,
+  onClick,
+});
+
+const et = new ElapsedTime(document.querySelector('.elapsed-time'));
+et.start();
+
+let numbers, actions;
+
+function onNumber(number) {
+  console.log(number);
+  const num = numbers.get(number);
+  num.setCount(num.count + 1);
+}
+
+function onAction(action) {
+  console.log(action);
+  if (action === 'hint') {
+    actions.get('hint').toggle();
+  }
+}
+
+numbers = generateNumbers(document.querySelector('.numbers'), onNumber);
+actions = generateActions(document.querySelector('.actions'), onAction);
+
 window.b = b; // TODO temp

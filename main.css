@@ -1,0 +1,81 @@
+html, body {
+    border: 0;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+.elapsed-time {
+    text-align: center;
+    color: #333;
+    font-size: 30px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.board {
+    position: absolute;
+    left: 50%;
+    top:  40%;
+    margin-left: calc(0.4 * -720px);
+    margin-top:  calc(0.4 * -720px);
+}
+
+.numbers {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.number {
+    display: inline-block;
+    text-align: center;
+    width: 4em;
+    height: 3.5em;
+    background-color: #DDD;
+    margin: 0.2em;
+    padding-top: 0.5em;
+    padding-bottom: -0.5em;
+    border-radius: 10px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.number:hover,
+.action:hover {
+    background-color: #FDD;
+}
+
+.number-value {
+    font-size: 32px;
+}
+
+.number-count {
+    font-size: 14px;
+}
+
+.actions {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.action {
+    display: inline-block;
+    text-align: center;
+    width: 4em;
+    height: 4em;
+    line-height: 4em;
+    font-size: 30px;
+    background-color: #DDD;
+    margin: 0.2em;
+    border-radius: 10px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.action.alt {
+    background-color: blue;
+}

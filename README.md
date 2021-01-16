@@ -19,4 +19,13 @@
 
 ## TODO
 
-- 
+- UI:
+    - elapsed time
+
+    - 3x3 buttons with count
+
+    - buttons:
+        - restart
+        - check
+        - hint mode
+        - undo
