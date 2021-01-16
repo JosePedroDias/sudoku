@@ -39,12 +39,9 @@ export class Board {
       ev.preventDefault();
       ev.stopPropagation();
       const g = this.canvas.getBoundingClientRect();
-      const x = ev.clientX - g.x;
-      const y = ev.clientY - g.y;
-      //console.log([x, y]);
-      const xc = Math.floor(x / this.cellWidth);
-      const yc = Math.floor(y / this.cellWidth);
-      const pos = [xc, yc];
+      const x = Math.floor((ev.clientX - g.x) / this.cellWidth);
+      const y = Math.floor((ev.clientY - g.y) / this.cellWidth);
+      const pos = [x, y];
       onClick(pos);
     });
   }
@@ -56,12 +53,26 @@ export class Board {
     }
   }
 
-  getPosition(event) {
-    // TODO
-  }
-
   getCell(pos) {
     return this.cells.get(hashPos(pos));
+  }
+
+  getState() {
+    const state = new Map();
+    for (let key of this.cells.keys()) {
+      const { value, hints } = this.cells.get(key);
+      state.set(key, { value, hints });
+    }
+    return state;
+  }
+
+  setState(state) {
+    for (let key of state.keys()) {
+      const c = this.cells.get(key);
+      const stateC = state.get(key);
+      c.value = stateC.value;
+      c.hints = stateC.hints;
+    }
   }
 }
 
