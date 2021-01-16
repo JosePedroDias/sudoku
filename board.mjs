@@ -1,3 +1,5 @@
+import { repeated, withoutRepeats } from './utils.mjs';
+
 const PI2 = 2 * Math.PI;
 
 const FONT = 'sans-serif';
@@ -10,6 +12,8 @@ const BG_INVALID_COLOR = '#966';
 const NUMBER_COLOR = '#000';
 const NUMBER_SELECTED_COLOR = '#FFF';
 
+const VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 export function hashPos(pos) {
   return pos.join(',');
 }
@@ -21,7 +25,7 @@ export function posEqual(p, P) {
 export function getRow(n) {
   const res = [];
   for (let i = 1; i <= 9; ++i) {
-    res.push([n, i]);
+    res.push([i, n]);
   }
   return res;
 }
@@ -29,7 +33,7 @@ export function getRow(n) {
 export function getCol(n) {
   const res = [];
   for (let i = 1; i <= 9; ++i) {
-    res.push([i, n]);
+    res.push([n, i]);
   }
   return res;
 }
@@ -55,6 +59,27 @@ export function getTile(n) {
     }
   }
   return res;
+}
+
+export function getTileNr(pos) {
+  const [x, y] = pos;
+  const xc = x < 4 ? 1 : x < 7 ? 2 : 3;
+  const yc = y < 4 ? 1 : y < 7 ? 2 : 3;
+  return 1 + xc - 1 + (yc - 1) * 3;
+}
+
+export function checkSequence(cells, kind, board, logFn) {
+  const filledCells = cells.filter((c) => c.value);
+  const values = filledCells.map((c) => c.value);
+  const repeatIndices = repeated(values);
+  if (repeatIndices) {
+    const pos1 = filledCells[repeatIndices[0]].position;
+    const pos2 = filledCells[repeatIndices[1]].position;
+    board.getCell(pos1).setInvalid();
+    board.getCell(pos2).setInvalid();
+    logFn(`repeated number in ${kind}: cells ${pos1} and ${pos2}`);
+  }
+  return !repeatIndices;
 }
 
 export class Board {
@@ -122,7 +147,10 @@ export class Board {
     c.stroke();
 
     for (let cell of this.cells.values()) {
-      const isSelectedPos = posEqual(cell.position, this.selectedPosition);
+      let isSelectedPos = posEqual(cell.position, this.selectedPosition);
+      if (this.relatedCells) {
+        isSelectedPos = this.relatedCells.indexOf(cell) !== -1;
+      }
       cell.draw(c, this.selectedNumber, isSelectedPos);
     }
   }
@@ -157,6 +185,51 @@ export class Board {
 
   getTileCells(n) {
     return getTile(n).map((pos) => this.getCell(pos));
+  }
+
+  getRelatedCells(pos) {
+    const ownCell = this.getCell(pos);
+    const [x, y] = pos;
+    const tn = getTileNr(pos);
+    const cells = [
+      ...this.getRowCells(y),
+      ...this.getColCells(x),
+      ...this.getTileCells(tn),
+    ];
+    return withoutRepeats(cells, [ownCell]);
+  }
+
+  getValidValues(pos) {
+    const relatedCells = this.getRelatedCells(pos);
+    //this.relatedCells = relatedCells;
+    const relatedValues = relatedCells
+      .filter((c) => c.value)
+      .map((c) => c.value);
+    return withoutRepeats(VALUES, relatedValues);
+  }
+
+  getValueHistogram() {
+    const hist = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 };
+    for (let c of this.getAllCells()) {
+      if (c.value) {
+        ++hist[c.value];
+      }
+    }
+    return hist;
+  }
+
+  check(logFn) {
+    let ok = true;
+
+    this.getAllCells().forEach((c) => c.clearInvalid());
+
+    for (let n = 1; n <= 9; ++n) {
+      ok = ok && checkSequence(this.getRowCells(n), `row #${n}`, this, logFn);
+      ok = ok && checkSequence(this.getColCells(n), `col #${n}`, this, logFn);
+      ok = ok && checkSequence(this.getTileCells(n), `tile #${n}`, this, logFn);
+    }
+
+    return ok;
   }
 
   getState() {

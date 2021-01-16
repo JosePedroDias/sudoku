@@ -1,11 +1,10 @@
 import { obj2map, map2obj } from './utils.mjs';
 import { storageFactory } from './storage.mjs';
-import { hasModifiers, KEYS } from './keys.mjs';
+import { hasModifiers } from './keys.mjs';
 import { ElapsedTime } from './elapsed-time.mjs';
 import { Board } from './board.mjs';
 import { generateNumbers } from './numbers.mjs';
 import { generateActions } from './actions.mjs';
-import { repeated } from './utils.mjs';
 
 const boardWidth = 720 * 0.8;
 
@@ -29,7 +28,7 @@ function getCellData(pos) {
 }
 
 let b,
-  lastPos,
+  lastPos = [5, 5],
   numbers,
   actions,
   history = [],
@@ -68,49 +67,22 @@ function onNumber(value) {
   history.push(b.getState());
 
   updateCounters();
+  console.log(b.getValidValues(lastPos));
+  b.draw();
 }
 
 function updateCounters() {
-  const hist = {};
-  for (let c of b.getAllCells()) {
-    if (c.value) {
-      if (!hist[c.value]) {
-        hist[c.value] = 1;
-      } else {
-        ++hist[c.value];
-      }
-    }
-  }
+  const hist = b.getValueHistogram();
   for (let n = 1; n <= 9; ++n) {
     numbers.get(n).setCount(9 - (hist[n] || 0));
   }
 }
 
 function check() {
-  let ok = true;
-
-  b.getAllCells().forEach((c) => c.clearInvalid());
-
-  function checkSequence(cells, kind) {
-    const filledCells = cells.filter((c) => c.value);
-    const values = filledCells.map((c) => c.value);
-    const repeatIndices = repeated(values);
-    if (repeatIndices) {
-      ok = false;
-      const pos1 = filledCells[repeatIndices[0]].position;
-      const pos2 = filledCells[repeatIndices[1]].position;
-      b.getCell(pos1).setInvalid();
-      b.getCell(pos2).setInvalid();
-      console.log(`repeated number in ${kind}: cells ${pos1} and ${pos2}`);
-    }
-  }
-  for (let n = 1; n <= 9; ++n) {
-    checkSequence(b.getRowCells(n), `row #${n}`);
-    checkSequence(b.getColCells(n), `col #${n}`);
-    checkSequence(b.getTileCells(n), `tile #${n}`);
-  }
+  const isValid = b.check((msg) => console.log(msg));
+  console.log(isValid);
   b.draw();
-  return ok;
+  return isValid;
 }
 
 function load() {

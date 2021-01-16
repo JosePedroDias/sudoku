@@ -21,6 +21,15 @@ export function repeated(arr) {
   }
 }
 
+export function withoutRepeats(arr, removeArr) {
+  const s = new Set();
+  arr.forEach((it) => s.add(it));
+  if (removeArr) {
+    removeArr.forEach((it) => s.delete(it));
+  }
+  return Array.from(s);
+}
+
 export function obj2map(o) {
   return new Map(Object.entries(o));
 }

@@ -19,6 +19,7 @@
 
 ## TODO
 
+- remove hints when setting a value
 - bug hint/set-unset
 - pause
 - resolution independent
