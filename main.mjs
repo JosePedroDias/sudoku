@@ -86,8 +86,14 @@ function updateCounters() {
 
 function check() {
   const isValid = b.check((msg) => console.log(msg));
-  console.log(isValid);
   b.draw();
+  console.log('check went ok?', isValid);
+
+  setTimeout(() => {
+    b.unsetInvalidCells();
+    b.draw();
+  }, 2500);
+
   return isValid;
 }
 

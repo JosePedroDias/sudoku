@@ -17,14 +17,15 @@ export function repeat(str, times) {
   return new Array(times + 1).join(str);
 }
 
+// returns first 2 indices with the same element.
 export function repeated(arr) {
-  const found = {};
+  const foundIndices = {};
   for (let i = 0; i < arr.length; ++i) {
-    const v = arr[i];
-    if (found[v]) {
-      return [found[v], i];
+    const elem = arr[i];
+    if (foundIndices[elem] !== undefined) {
+      return [foundIndices[elem], i];
     }
-    found[v] = i;
+    foundIndices[elem] = i;
   }
 }
 

@@ -27,7 +27,17 @@ export function posEqual(p, P) {
   return p[0] === P[0] && p[1] === P[1];
 }
 
-export function getRow(n) {
+export function getAllPositions() {
+  const res = [];
+  for (let y = 1; y <= 9; ++y) {
+    for (let x = 1; x <= 9; ++x) {
+      res.push([x, y]);
+    }
+  }
+  return res;
+}
+
+export function getRowPositions(n) {
   const res = [];
   for (let i = 1; i <= 9; ++i) {
     res.push([i, n]);
@@ -35,7 +45,7 @@ export function getRow(n) {
   return res;
 }
 
-export function getCol(n) {
+export function getColPositions(n) {
   const res = [];
   for (let i = 1; i <= 9; ++i) {
     res.push([n, i]);
@@ -55,7 +65,7 @@ const tileStarts = {
   9: [7, 7],
 };
 
-export function getTile(n) {
+export function getTilePositions(n) {
   const [tx, ty] = tileStarts[n];
   const res = [];
   for (let j = 0; j < 3; ++j) {
@@ -73,18 +83,20 @@ export function getTileNr(pos) {
   return 1 + xc - 1 + (yc - 1) * 3;
 }
 
-export function checkSequence(cells, kind, board, logFn) {
+export function checkSequence(cells, kind, logFn) {
   const filledCells = cells.filter((c) => c.value);
-  const values = filledCells.map((c) => c.value);
-  const repeatIndices = repeated(values);
-  if (repeatIndices) {
-    const pos1 = filledCells[repeatIndices[0]].position;
-    const pos2 = filledCells[repeatIndices[1]].position;
-    board.getCell(pos1).setInvalid();
-    board.getCell(pos2).setInvalid();
-    logFn(`repeated number in ${kind}: cells ${pos1} and ${pos2}`);
+  const filledValues = filledCells.map((c) => c.value);
+  const repeatedIndices = repeated(filledValues);
+  if (repeatedIndices) {
+    const c1 = filledCells[repeatedIndices[0]];
+    const c2 = filledCells[repeatedIndices[1]];
+    c1.setInvalid();
+    c2.setInvalid();
+    logFn(
+      `repeated number in ${kind}: cells ${c1.position} and ${c2.position}`
+    );
   }
-  return !repeatIndices;
+  return !repeatedIndices;
 }
 
 export class Board {
@@ -99,17 +111,14 @@ export class Board {
     this.selectedPosition = [-1, -1];
 
     this.cells = new Map();
-    for (let y = 1; y <= 9; ++y) {
-      for (let x = 1; x <= 9; ++x) {
-        const pos = [x, y];
-        const data = getCellData
-          ? getCellData(pos)
-          : { value: undefined, hints: [] };
-        this.cells.set(
-          hashPos(pos),
-          new Cell(pos, this.cellWidth, data.value, data.hints)
-        );
-      }
+    for (let pos of getAllPositions()) {
+      const data = getCellData
+        ? getCellData(pos)
+        : { value: undefined, hints: [] };
+      this.cells.set(
+        hashPos(pos),
+        new Cell(pos, this.cellWidth, data.value, data.hints)
+      );
     }
 
     this.ctx.textAlign = 'center';
@@ -139,18 +148,18 @@ export class Board {
 
     c.fillStyle = BG2_COLOR;
 
-    for (let cy = 0; cy < 9; ++cy) {
-      for (let cx = 0; cx < 9; ++cx) {
-        if ((cx + cy) % 2 === 1) {
-          continue;
-        }
-        c.fillRect(
-          cx * this.cellWidth,
-          cy * this.cellWidth,
-          this.cellWidth,
-          this.cellWidth
-        );
+    for (let [cx, cy] of getAllPositions()) {
+      --cx;
+      --cy;
+      if ((cx + cy) % 2 === 1) {
+        continue;
       }
+      c.fillRect(
+        cx * this.cellWidth,
+        cy * this.cellWidth,
+        this.cellWidth,
+        this.cellWidth
+      );
     }
 
     c.strokeStyle = GRID_COLOR;
@@ -186,23 +195,19 @@ export class Board {
   }
 
   getAllCells() {
-    const res = [];
-    for (let c of this.cells.values()) {
-      res.push(c);
-    }
-    return res;
+    return getAllPositions().map((pos) => this.getCell(pos));
   }
 
   getRowCells(n) {
-    return getRow(n).map((pos) => this.getCell(pos));
+    return getRowPositions(n).map((pos) => this.getCell(pos));
   }
 
   getColCells(n) {
-    return getCol(n).map((pos) => this.getCell(pos));
+    return getColPositions(n).map((pos) => this.getCell(pos));
   }
 
   getTileCells(n) {
-    return getTile(n).map((pos) => this.getCell(pos));
+    return getTilePositions(n).map((pos) => this.getCell(pos));
   }
 
   getRelatedCells(pos) {
@@ -236,17 +241,20 @@ export class Board {
   }
 
   check(logFn) {
+    this.unsetInvalidCells();
+
     let ok = true;
-
-    this.getAllCells().forEach((c) => c.clearInvalid());
-
     for (let n = 1; n <= 9; ++n) {
-      ok = ok && checkSequence(this.getRowCells(n), `row #${n}`, this, logFn);
-      ok = ok && checkSequence(this.getColCells(n), `col #${n}`, this, logFn);
-      ok = ok && checkSequence(this.getTileCells(n), `tile #${n}`, this, logFn);
+      ok = ok && checkSequence(this.getRowCells(n), `row #${n}`, logFn);
+      ok = ok && checkSequence(this.getColCells(n), `col #${n}`, logFn);
+      ok = ok && checkSequence(this.getTileCells(n), `tile #${n}`, logFn);
     }
 
     return ok;
+  }
+
+  unsetInvalidCells() {
+    this.getAllCells().forEach((c) => c.unsetInvalid());
   }
 
   getState() {
@@ -354,12 +362,11 @@ class Cell {
     this.isInvalid = true;
   }
 
-  clearInvalid() {
+  unsetInvalid() {
     delete this.isInvalid;
   }
 
   clear(hintsToo) {
-    this.clearInvalid();
     this.value = undefined;
     if (hintsToo) {
       this.hints = [];
@@ -367,7 +374,6 @@ class Cell {
   }
 
   setValue(value) {
-    this.clearInvalid();
     this.value = value;
   }
 
@@ -376,7 +382,6 @@ class Cell {
   }
 
   setHint(hint, keepValue) {
-    this.clearInvalid();
     if (this.value && !keepValue) {
       this.value = undefined;
     }
@@ -388,7 +393,6 @@ class Cell {
   }
 
   unsetHint(hint, keepValue) {
-    this.clearInvalid();
     if (this.value && !keepValue) {
       this.value = undefined;
     }
@@ -402,19 +406,10 @@ class Cell {
   }
 
   toggleHint(hint, keepValue) {
-    this.clearInvalid();
-    if (this.value && !keepValue) {
-      this.value = undefined;
-    }
-    const idx = this.hints.indexOf(hint);
-    if (idx === -1) {
-      this.hints.push(hint);
-      this.hints.sort();
+    if (this.hasHint(hint)) {
+      this.unsetHint(hint, keepValue);
     } else {
-      this.hints.splice(idx, 1);
-      if (this.value === hint) {
-        this.value = undefined;
-      }
+      this.setHint(hint, keepValue);
     }
   }
 
