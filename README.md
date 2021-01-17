@@ -2,12 +2,15 @@
 
 ## Motivation
 
+A sudoku browser game in recent JS, drawn in canvas. Hopefully mobile friendly.  
+The UX is somewhat inspired in Sudoku, the Clean One (for Android).
 
 ## References 
 
 - [canvas cheat sheet](https://simon.html5.org/dump/html5-canvas-cheat-sheet.html)
+- [sudopedia](http://sudopedia.enjoysudoku.com/)
 
-## Dev
+## Local HTTPS Dev
 
     brew install mkcert
     mkcert -install
@@ -20,6 +23,6 @@
 ## TODO
 
 - validate undos are being well captured
-- resolution independent
+- resolution independent / mobile tests
 - register whether hints were asked and check too
 - high score?

@@ -100,5 +100,6 @@ body.paused div.paused {
 }
 
 .action.alt {
+    color: #FFF;
     background-color: blue;
 }
