@@ -17,7 +17,7 @@ export class SAction {
 export function generateActions(containerEl, onAction) {
   const actions = new Map();
 
-  const actionNames = 'load save restart check hint undo'.split(' ');
+  const actionNames = ['load', 'save', 'restart', 'check', 'hint mode', 'undo'];
 
   for (let actionName of actionNames) {
     actions.set(actionName, new SAction(containerEl, actionName));

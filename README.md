@@ -19,10 +19,8 @@
 
 ## TODO
 
-- bug hint/set-unset
 - validate undo
 - pause
-- allow explicit call for hints
 - resolution independent
 - register whether hints were asked and check too
 - high score?

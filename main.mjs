@@ -60,13 +60,9 @@ function onNumber(value) {
   if (inHintMode) {
     c.toggleHint(value);
   } else {
-    if (value) {
-      c.setValue(value);
-      for (let c2 of b.getRelatedCells(lastPos)) {
-        c2.unsetHint(value, true);
-      }
-    } else {
-      c.setValue(undefined);
+    const hasValue = c.toggleValue(value);
+    if (hasValue) {
+      b.getRelatedCells(lastPos).forEach((c2) => c2.unsetHint(value, true));
     }
   }
   b.draw();
@@ -97,6 +93,11 @@ function check() {
   return isValid;
 }
 
+function fillHints() {
+  b.fillHints();
+  b.draw();
+}
+
 function load() {
   const dt = storage.getItem('time');
   et.reset(dt);
@@ -112,12 +113,6 @@ function save() {
   storage.setItem('state', map2obj(b.getState()));
 }
 
-function restart() {
-  history = [history[0]];
-  b.setState(history[0]);
-  b.draw();
-}
-
 function undo() {
   if (history.length < 2) {
     return;
@@ -127,8 +122,8 @@ function undo() {
   b.draw();
 }
 
-function hint() {
-  actions.get('hint').toggle();
+function toggleHintMode() {
+  actions.get('hint mode').toggle();
   inHintMode = !inHintMode;
 }
 
@@ -137,8 +132,8 @@ function printSelectedCellHints() {
 }
 
 function onAction(action) {
-  if (action === 'hint') {
-    hint();
+  if (action === 'hint mode') {
+    toggleHintMode();
   } else if (action === 'undo') {
     undo();
   } else if (action === 'load') {
@@ -147,8 +142,6 @@ function onAction(action) {
     save();
   } else if (action === 'check') {
     check();
-  } else if (action === 'restart') {
-    restart();
   }
 }
 
@@ -183,7 +176,7 @@ document.body.addEventListener('keydown', (ev) => {
       }
       break;
     case 'Space':
-      hint();
+      toggleHintMode();
       break;
     case 'KeyL':
       load();
@@ -191,11 +184,11 @@ document.body.addEventListener('keydown', (ev) => {
     case 'KeyS':
       save();
       break;
-    case 'KeyR':
-      restart();
-      break;
     case 'KeyU':
       undo();
+      break;
+    case 'KeyH':
+      fillHints();
       break;
     case 'KeyC':
       check();

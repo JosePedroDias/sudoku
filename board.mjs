@@ -253,6 +253,14 @@ export class Board {
     return ok;
   }
 
+  fillHints() {
+    this.getAllCells().forEach((c) => {
+      if (!c.hasValue()) {
+        c.hints = this.getValidValues(c.position);
+      }
+    });
+  }
+
   unsetInvalidCells() {
     this.getAllCells().forEach((c) => c.unsetInvalid());
   }
@@ -373,8 +381,19 @@ class Cell {
     }
   }
 
+  hasValue() {
+    return this.value >= 1 && this.value <= 9;
+  }
+
   setValue(value) {
     this.value = value;
+  }
+
+  toggleValue(value) {
+    const hadValue = this.hasValue();
+    const hadSameValue = hadValue && value === this.value;
+    this.value = hadSameValue ? undefined : value;
+    return !hadValue;
   }
 
   hasHint(hint) {
