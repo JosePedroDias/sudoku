@@ -42,7 +42,7 @@ function onClickCell(pos) {
   b.draw();
 
   lastPos = pos;
-  printSelectedCellHints();
+  //printSelectedCellHints();
 }
 
 b = new Board(document.querySelector('.board'), boardWidth, {
@@ -132,14 +132,16 @@ function printSelectedCellHints() {
 }
 
 function onAction(action) {
-  if (action === 'hint mode') {
-    toggleHintMode();
-  } else if (action === 'undo') {
-    undo();
-  } else if (action === 'load') {
+  if (action === 'load') {
     load();
   } else if (action === 'save') {
     save();
+  } else if (action === 'hint mode') {
+    toggleHintMode();
+  } else if (action === 'undo') {
+    undo();
+  } else if (action === 'fill hints') {
+    fillHints();
   } else if (action === 'check') {
     check();
   }
@@ -154,25 +156,21 @@ document.body.addEventListener('keydown', (ev) => {
     case 'ArrowLeft':
       if (lastPos[0] > 1) {
         --lastPos[0];
-        printSelectedCellHints();
       }
       break;
     case 'ArrowRight':
       if (lastPos[0] < 9) {
         ++lastPos[0];
-        printSelectedCellHints();
       }
       break;
     case 'ArrowUp':
       if (lastPos[1] > 1) {
         --lastPos[1];
-        printSelectedCellHints();
       }
       break;
     case 'ArrowDown':
       if (lastPos[1] < 9) {
         ++lastPos[1];
-        printSelectedCellHints();
       }
       break;
     case 'Space':
