@@ -42,6 +42,7 @@ function onClickCell(pos) {
   b.draw();
 
   lastPos = pos;
+  printSelectedCellHints();
 }
 
 b = new Board(document.querySelector('.board'), boardWidth, {
@@ -56,18 +57,23 @@ et.start();
 
 function onNumber(value) {
   const c = b.getCell(lastPos);
-
   if (inHintMode) {
     c.toggleHint(value);
   } else {
-    c.setValue(c.value === value ? undefined : value);
+    if (value) {
+      c.setValue(value);
+      for (let c2 of b.getRelatedCells(lastPos)) {
+        c2.unsetHint(value, true);
+      }
+    } else {
+      c.setValue(undefined);
+    }
   }
   b.draw();
 
   history.push(b.getState());
 
   updateCounters();
-  console.log(b.getValidValues(lastPos));
   b.draw();
 }
 
@@ -120,6 +126,10 @@ function hint() {
   inHintMode = !inHintMode;
 }
 
+function printSelectedCellHints() {
+  console.log(b.getValidValues(lastPos));
+}
+
 function onAction(action) {
   if (action === 'hint') {
     hint();
@@ -145,21 +155,25 @@ document.body.addEventListener('keydown', (ev) => {
     case 'ArrowLeft':
       if (lastPos[0] > 1) {
         --lastPos[0];
+        printSelectedCellHints();
       }
       break;
     case 'ArrowRight':
       if (lastPos[0] < 9) {
         ++lastPos[0];
+        printSelectedCellHints();
       }
       break;
     case 'ArrowUp':
       if (lastPos[1] > 1) {
         --lastPos[1];
+        printSelectedCellHints();
       }
       break;
     case 'ArrowDown':
       if (lastPos[1] < 9) {
         ++lastPos[1];
+        printSelectedCellHints();
       }
       break;
     case 'Space':

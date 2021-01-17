@@ -19,7 +19,10 @@
 
 ## TODO
 
-- remove hints when setting a value
 - bug hint/set-unset
+- validate undo
 - pause
+- allow explicit call for hints
 - resolution independent
+- register whether hints were asked and check too
+- high score?

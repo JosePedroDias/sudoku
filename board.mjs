@@ -323,6 +323,18 @@ export class Board {
       c.hints = hints;
     }
   }
+
+  setState81(str) {
+    let i = 0;
+    for (let y = 1; y <= 9; ++y) {
+      for (let x = 1; x <= 9; ++x) {
+        const value = parseInt(str[i++], 10);
+        const c = this.getCell([x, y]);
+        c.value = value >= 1 && value <= 9 ? value : undefined;
+        c.hints = [];
+      }
+    }
+  }
 }
 
 class Cell {
@@ -359,15 +371,50 @@ class Cell {
     this.value = value;
   }
 
-  toggleHint(hint) {
+  hasHint(hint) {
+    return this.hints.indexOf(hint) !== -1;
+  }
+
+  setHint(hint, keepValue) {
     this.clearInvalid();
-    this.value = undefined;
+    if (this.value && !keepValue) {
+      this.value = undefined;
+    }
+    const idx = this.hints.indexOf(hint);
+    if (idx === -1) {
+      this.hints.push(hint);
+      this.hints.sort();
+    }
+  }
+
+  unsetHint(hint, keepValue) {
+    this.clearInvalid();
+    if (this.value && !keepValue) {
+      this.value = undefined;
+    }
+    const idx = this.hints.indexOf(hint);
+    if (idx !== -1) {
+      this.hints.splice(idx, 1);
+      if (this.value === hint) {
+        this.value = undefined;
+      }
+    }
+  }
+
+  toggleHint(hint, keepValue) {
+    this.clearInvalid();
+    if (this.value && !keepValue) {
+      this.value = undefined;
+    }
     const idx = this.hints.indexOf(hint);
     if (idx === -1) {
       this.hints.push(hint);
       this.hints.sort();
     } else {
       this.hints.splice(idx, 1);
+      if (this.value === hint) {
+        this.value = undefined;
+      }
     }
   }
 
