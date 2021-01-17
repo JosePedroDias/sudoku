@@ -21,6 +21,28 @@ html, body {
     margin-top:  calc(0.4 * -720px);
 }
 
+div.paused {
+    text-align: center;
+    width: 10em;
+    height: 5em;
+    line-height: 5em;
+    font-size: 20px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -5em;
+    margin-top: -2.5em;
+    display: none;
+}
+
+body.paused .board {
+    display: none;
+}
+
+body.paused div.paused {
+    display: block;
+}
+
 .numbers {
     position: absolute;
     bottom: 0;

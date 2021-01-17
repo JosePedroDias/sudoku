@@ -19,10 +19,7 @@
 
 ## TODO
 
-- clearing a cell should set hints back?
-- changing a cell value should set old hints back and remove new
-- validate undo
-- pause
+- validate undos are being well captured
 - resolution independent
 - register whether hints were asked and check too
 - high score?

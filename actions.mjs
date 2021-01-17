@@ -18,12 +18,13 @@ export function generateActions(containerEl, onAction) {
   const actions = new Map();
 
   const actionNames = [
-    'load',
-    'save',
-    'hint mode',
-    'undo',
-    'fill hints',
-    'check',
+    'value/hint',
+    'Pause',
+    'Undo',
+    'Load',
+    'Save',
+    'Hints',
+    'Check',
   ];
 
   for (let actionName of actionNames) {

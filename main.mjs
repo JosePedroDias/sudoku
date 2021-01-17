@@ -10,29 +10,13 @@ const boardWidth = 720 * 0.8;
 
 const storage = storageFactory('sdku');
 
-function getCellData(pos) {
-  const value = undefined;
-  //const value = rndInt(3) === 0 ? rndInt(9) + 1 : undefined;
-
-  const hints = [];
-  /*for (let n = 1; n <= 9; ++n) {
-    if (rndInt(3) === 0) {
-      hints.push(n);
-    }
-  }*/
-
-  return {
-    value,
-    hints,
-  };
-}
-
 let b,
   lastPos = [5, 5],
   numbers,
   actions,
   history = [],
-  inHintMode = false;
+  inHintMode = false,
+  isPaused = false;
 
 function onClickCell(pos) {
   const c = b.getCell(pos);
@@ -42,11 +26,9 @@ function onClickCell(pos) {
   b.draw();
 
   lastPos = pos;
-  //printSelectedCellHints();
 }
 
 b = new Board(document.querySelector('.board'), boardWidth, {
-  getCellData,
   onClickCell,
 });
 
@@ -60,9 +42,29 @@ function onNumber(value) {
   if (inHintMode) {
     c.toggleHint(value);
   } else {
-    const hasValue = c.toggleValue(value);
-    if (hasValue) {
-      b.getRelatedCells(lastPos).forEach((c2) => c2.unsetHint(value, true));
+    const oldValue = c.value;
+    c.toggleValue(value);
+    const relatedCells = b.getRelatedCells(lastPos);
+    if (oldValue) {
+      relatedCells.forEach((c2) => {
+        const valids = b.getValidValues(c2.position);
+        if (valids.indexOf(oldValue) !== -1) {
+          // helps a bit...
+          c2.setHint(oldValue, true);
+        }
+      });
+    }
+    if (c.value) {
+      relatedCells.forEach((c2) => c2.unsetHint(value, true));
+      if (b.checkDone()) {
+        et.stop();
+        b.setSelectedNumber(-1);
+        window.alert('done!');
+      } else {
+        b.setSelectedNumber(c.value);
+      }
+    } else {
+      b.setSelectedNumber(-1);
     }
   }
   b.draw();
@@ -123,26 +125,35 @@ function undo() {
 }
 
 function toggleHintMode() {
-  actions.get('hint mode').toggle();
+  actions.get('value/hint').toggle();
   inHintMode = !inHintMode;
 }
 
-function printSelectedCellHints() {
-  console.log(b.getValidValues(lastPos));
+function togglePause() {
+  actions.get('Pause').toggle();
+  isPaused = !isPaused;
+  document.body.classList.toggle('paused');
+  if (isPaused) {
+    et.stop();
+  } else {
+    et.start();
+  }
 }
 
 function onAction(action) {
-  if (action === 'load') {
-    load();
-  } else if (action === 'save') {
-    save();
-  } else if (action === 'hint mode') {
+  if (action === 'value/hint') {
     toggleHintMode();
-  } else if (action === 'undo') {
+  } else if (action === 'Pause') {
+    togglePause();
+  } else if (action === 'Undo') {
     undo();
-  } else if (action === 'fill hints') {
+  } else if (action === 'Load') {
+    load();
+  } else if (action === 'Save') {
+    save();
+  } else if (action === 'Hints') {
     fillHints();
-  } else if (action === 'check') {
+  } else if (action === 'Check') {
     check();
   }
 }
@@ -176,6 +187,9 @@ document.body.addEventListener('keydown', (ev) => {
     case 'Space':
       toggleHintMode();
       break;
+    case 'KeyP':
+      togglePause();
+      break;
     case 'KeyL':
       load();
       break;
@@ -200,6 +214,9 @@ document.body.addEventListener('keydown', (ev) => {
     case 'Digit7':
     case 'Digit8':
     case 'Digit9':
+      if (isPaused) {
+        break;
+      }
       const value = parseInt(ev.code.substring(5));
       onNumber(value);
       break;

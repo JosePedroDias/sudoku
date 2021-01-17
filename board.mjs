@@ -265,6 +265,11 @@ export class Board {
     this.getAllCells().forEach((c) => c.unsetInvalid());
   }
 
+  checkDone() {
+    const hist = this.getValueHistogram();
+    return Math.min(...Object.values(hist)) === 9 && this.check;
+  }
+
   getState() {
     const state = new Map();
     for (let key of this.cells.keys()) {
