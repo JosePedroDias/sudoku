@@ -20,6 +20,13 @@ The UX is somewhat inspired in Sudoku, the Clean One (for Android).
     npx https-localhost (prefix with sudo if in linux)
     visit: https://localhost/
 
+## Remote HTTPS Dev
+    npm i -g --only=prod localtunnel
+    npm i -g --only=prod http-server
+
+    http-server &
+    lt --port 8080 --subdomain sdku
+
 ## TODO
 
 - validate undos are being well captured
