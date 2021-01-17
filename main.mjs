@@ -92,6 +92,7 @@ function load() {
   history = [st];
   b.setState(st);
   b.draw();
+  updateCounters();
 }
 
 function save() {
@@ -204,4 +205,4 @@ actions = generateActions(document.querySelector('.actions'), onAction);
 
 updateCounters();
 
-//window.b = b; // TODO temp
+window.b = b; // TODO temp

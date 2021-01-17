@@ -1,4 +1,4 @@
-import { repeated, withoutRepeats } from './utils.mjs';
+import { repeated, withoutRepeats, repeat } from './utils.mjs';
 
 const PI2 = 2 * Math.PI;
 
@@ -6,6 +6,7 @@ const FONT = 'sans-serif';
 
 const GRID_COLOR = '#696';
 const BG_COLOR = '#FFF';
+const BG2_COLOR = '#F3F3F3';
 const BG_SELECTED_COLOR = '#669';
 const BG_SELECTED_NUMBER_COLOR = '#336';
 const BG_INVALID_COLOR = '#966';
@@ -13,6 +14,10 @@ const NUMBER_COLOR = '#000';
 const NUMBER_SELECTED_COLOR = '#FFF';
 
 const VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+const ASCII1 = '.-----.-----.-----.';
+const ASCII2 = ':----- ----- -----:';
+const ASCII3 = "'-----'-----'-----'";
 
 export function hashPos(pos) {
   return pos.join(',');
@@ -132,6 +137,22 @@ export class Board {
     c.fillStyle = BG_COLOR;
     c.fillRect(0, 0, this.boardWidth, this.boardWidth);
 
+    c.fillStyle = BG2_COLOR;
+
+    for (let cy = 0; cy < 9; ++cy) {
+      for (let cx = 0; cx < 9; ++cx) {
+        if ((cx + cy) % 2 === 1) {
+          continue;
+        }
+        c.fillRect(
+          cx * this.cellWidth,
+          cy * this.cellWidth,
+          this.cellWidth,
+          this.cellWidth
+        );
+      }
+    }
+
     c.strokeStyle = GRID_COLOR;
     c.lineWidth = this.boardWidth / 400;
     const g = 0.1;
@@ -147,10 +168,7 @@ export class Board {
     c.stroke();
 
     for (let cell of this.cells.values()) {
-      let isSelectedPos = posEqual(cell.position, this.selectedPosition);
-      if (this.relatedCells) {
-        isSelectedPos = this.relatedCells.indexOf(cell) !== -1;
-      }
+      const isSelectedPos = posEqual(cell.position, this.selectedPosition);
       cell.draw(c, this.selectedNumber, isSelectedPos);
     }
   }
@@ -201,7 +219,6 @@ export class Board {
 
   getValidValues(pos) {
     const relatedCells = this.getRelatedCells(pos);
-    //this.relatedCells = relatedCells;
     const relatedValues = relatedCells
       .filter((c) => c.value)
       .map((c) => c.value);
@@ -236,9 +253,66 @@ export class Board {
     const state = new Map();
     for (let key of this.cells.keys()) {
       const { value, hints } = this.cells.get(key);
-      state.set(key, [value, hints]);
+      state.set(key, [value || 0, hints]);
     }
     return state;
+  }
+
+  getState81() {
+    const res = [];
+    for (let y = 1; y <= 9; ++y) {
+      for (let x = 1; x <= 9; ++x) {
+        res.push(this.getCell([x, y]).value || 0);
+      }
+    }
+    return res.join('');
+  }
+
+  getStateAscii() {
+    const lines = [ASCII1];
+    for (let y = 1; y <= 9; ++y) {
+      const r = [];
+      for (let x = 1; x <= 9; ++x) {
+        r.push(this.getCell([x, y]).value || '.');
+      }
+      lines.push(
+        `|${r[0]} ${r[1]} ${r[2]}|${r[3]} ${r[4]} ${r[5]}|${r[6]} ${r[7]} ${r[8]}|`
+      );
+      if (y === 3 || y === 6) {
+        lines.push(ASCII2);
+      }
+    }
+    lines.push(ASCII3);
+    return lines.join('\n');
+  }
+
+  getStateAscii2() {
+    const m = Math.max(
+      ...this.getAllCells().map((c) => (c.value ? 1 : c.hints.length))
+    );
+    const n = m * 3 + 2;
+    const lines = [`.${repeat('-', n)}.${repeat('-', n)}.${repeat('-', n)}.`];
+    const sep = `:${repeat('-', n)}:${repeat('-', n)}:${repeat('-', n)}:`;
+    function z(s) {
+      return s + repeat(' ', m - s.length);
+    }
+    for (let y = 1; y <= 9; ++y) {
+      const r = [];
+      for (let x = 1; x <= 9; ++x) {
+        const c = this.getCell([x, y]);
+        r.push(c.value ? `${c.value}` : c.hints.join(''));
+      }
+      lines.push(
+        `|${z(r[0])} ${z(r[1])} ${z(r[2])}|${z(r[3])} ${z(r[4])} ${z(r[5])}|${z(
+          r[6]
+        )} ${z(r[7])} ${z(r[8])}|`
+      );
+      if (y === 3 || y === 6) {
+        lines.push(sep);
+      }
+    }
+    lines.push(`'${repeat('-', n)}'${repeat('-', n)}'${repeat('-', n)}'`);
+    return lines.join('\n');
   }
 
   setState(state) {

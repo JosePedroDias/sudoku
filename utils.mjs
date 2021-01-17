@@ -10,6 +10,13 @@ export function zeroPad(n) {
   return n < 10 ? `0${n}` : n;
 }
 
+export function repeat(str, times) {
+  if (times <= 0) {
+    return '';
+  }
+  return new Array(times + 1).join(str);
+}
+
 export function repeated(arr) {
   const found = {};
   for (let i = 0; i < arr.length; ++i) {
