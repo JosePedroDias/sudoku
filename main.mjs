@@ -22,7 +22,10 @@ function onClickCell(pos) {
   const c = b.getCell(pos);
 
   b.setSelectedPosition(pos);
-  b.setSelectedNumber(c.value || -1);
+  //b.setSelectedNumber(c.value || -1);
+  if (c.value) {
+    b.setSelectedNumber(c.value);
+  }
   b.draw();
 
   lastPos = pos;
@@ -47,6 +50,8 @@ function onNumber(value) {
     const relatedCells = b.getRelatedCells(lastPos);
     if (oldValue) {
       relatedCells.forEach((c2) => {
+        // not to set hints on unvisited cells
+        if (c2.hints.length === 0) { return; }
         const valids = b.getValidValues(c2.position);
         if (valids.indexOf(oldValue) !== -1) {
           // helps a bit...
@@ -64,7 +69,7 @@ function onNumber(value) {
         b.setSelectedNumber(c.value);
       }
     } else {
-      b.setSelectedNumber(-1);
+      //b.setSelectedNumber(-1);
     }
   }
   b.draw();

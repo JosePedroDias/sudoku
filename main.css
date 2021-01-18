@@ -14,7 +14,7 @@ html, body {
 }
 
 .board {
-    position: absolute;
+    position: fixed;
     left: 50%;
     top:  40%;
     margin-left: calc(0.4 * -720px);
@@ -27,7 +27,7 @@ div.paused {
     height: 5em;
     line-height: 5em;
     font-size: 20px;
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 50%;
     margin-left: -5em;
@@ -44,9 +44,11 @@ body.paused div.paused {
 }
 
 .numbers {
-    position: absolute;
+    position: fixed;
     bottom: 0;
-    left: 0;
+    left: 50%;
+    /* 211px width */
+    margin-left: -105px;
 }
 
 .number {
@@ -78,14 +80,16 @@ body.paused div.paused {
 }
 
 .actions {
-    position: absolute;
-    bottom: 0;
+    position: fixed;
+    top: 50%;
     right: 0;
+    /* 414px height */
+    margin-top: -207px;
 }
 
 .action {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    display: inline-block;
+    display: block;
     text-align: center;
     width: 4em;
     height: 3em;

@@ -29,7 +29,15 @@ The UX is somewhat inspired in Sudoku, the Clean One (for Android).
 
 ## TODO
 
-- validate undos are being well captured
+- display check result in button; mark check as having been used!
+- display hints as having been used
+- validate undos are being well captured, improve in necessary
 - resolution independent / mobile tests
-- register whether hints were asked and check too
-- high score?
+
+## Unlikely but eventually:
+- solving
+    - implement solving algorithms
+    - classify difficulty based on histogram and number/frequency of moves to solve
+    
+- generating
+    ...

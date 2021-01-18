@@ -5,10 +5,10 @@ const PI2 = 2 * Math.PI;
 const FONT = 'sans-serif';
 
 const GRID_COLOR = '#696';
-const BG_COLOR = '#FFF';
-const BG2_COLOR = '#F3F3F3';
-const BG_SELECTED_COLOR = '#669';
-const BG_SELECTED_NUMBER_COLOR = '#336';
+const BG_BOARD_COLOR = '#FFF';
+const BG_BOARD2_COLOR = '#F1F1F1';
+const BG_SELECTED_NUMBER_COLOR = '#669';
+const SELECTED_POSITION_COLOR = '#444'
 const BG_INVALID_COLOR = '#966';
 const NUMBER_COLOR = '#000';
 const NUMBER_SELECTED_COLOR = '#FFF';
@@ -143,10 +143,10 @@ export class Board {
     const c = this.ctx;
     const cw = this.cellWidth;
 
-    c.fillStyle = BG_COLOR;
+    c.fillStyle = BG_BOARD_COLOR;
     c.fillRect(0, 0, this.boardWidth, this.boardWidth);
 
-    c.fillStyle = BG2_COLOR;
+    c.fillStyle = BG_BOARD2_COLOR;
 
     for (let [cx, cy] of getAllPositions()) {
       --cx;
@@ -163,7 +163,7 @@ export class Board {
     }
 
     c.strokeStyle = GRID_COLOR;
-    c.lineWidth = this.boardWidth / 400;
+    c.lineWidth = this.boardWidth / 200;
     const g = 0.1;
     c.beginPath();
     c.moveTo(cw * (0 + g), cw * 3);
@@ -451,20 +451,26 @@ class Cell {
       }
     }
 
-    const isSelected = this.isInvalid || hasSelectedNumber || hasSelectedPos;
+    const isFilled = this.isInvalid || hasSelectedNumber;
+    const isSeleted = hasSelectedPos;
 
-    if (isSelected) {
+    if (isFilled) {
       ctx.fillStyle = this.isInvalid
         ? BG_INVALID_COLOR
-        : hasSelectedPos
-        ? BG_SELECTED_COLOR
         : BG_SELECTED_NUMBER_COLOR;
       ctx.beginPath();
       ctx.arc(x0 + w * 0.5, y0 + w * 0.5, w * 0.46, 0, PI2);
       ctx.fill();
     }
 
-    ctx.fillStyle = isSelected ? NUMBER_SELECTED_COLOR : NUMBER_COLOR;
+    if (isSeleted) {
+      ctx.strokeStyle = SELECTED_POSITION_COLOR;
+      ctx.beginPath();
+      ctx.arc(x0 + w * 0.5, y0 + w * 0.5, w * 0.46, 0, PI2);
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = isFilled ? NUMBER_SELECTED_COLOR : NUMBER_COLOR;
 
     if (this.value) {
       ctx.font = this.fontV;
