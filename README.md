@@ -31,7 +31,6 @@ The UX is somewhat inspired in Sudoku, the Clean One (for Android).
 
 - display check result in button; mark check as having been used!
 - display hints as having been used
-- validate undos are being well captured, improve in necessary
 - resolution independent / mobile tests
 
 ## Unlikely but eventually:

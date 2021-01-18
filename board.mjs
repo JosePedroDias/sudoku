@@ -271,10 +271,10 @@ export class Board {
   }
 
   getState() {
-    const state = new Map();
-    for (let key of this.cells.keys()) {
-      const { value, hints } = this.cells.get(key);
-      state.set(key, [value || 0, hints]);
+    const state = [];
+    for (let pos of getAllPositions()) {
+      const { value, hints } = this.cells.get(hashPos(pos));
+      state.push([value || 0, ...hints]);
     }
     return state;
   }
@@ -337,10 +337,11 @@ export class Board {
   }
 
   setState(state) {
-    for (let key of state.keys()) {
-      const c = this.cells.get(key);
-      const [value, hints] = state.get(key);
-      c.value = value;
+    const cellsLeft = [...state];
+    for (let pos of getAllPositions()) {
+      const [value, ...hints] = cellsLeft.shift();
+      const c = this.getCell(pos);
+      c.value = value || undefined;
       c.hints = hints;
     }
   }

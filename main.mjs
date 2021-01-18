@@ -108,7 +108,7 @@ function fillHints() {
 function load() {
   const dt = storage.getItem('time');
   et.reset(dt);
-  const st = obj2map(storage.getItem('state'));
+  const st = storage.getItem('state');
   history = [st];
   b.setState(st);
   b.draw();
@@ -117,7 +117,7 @@ function load() {
 
 function save() {
   storage.setItem('time', et.dt);
-  storage.setItem('state', map2obj(b.getState()));
+  storage.setItem('state', b.getState());
 }
 
 function undo() {
