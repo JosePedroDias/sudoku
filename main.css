@@ -91,11 +91,10 @@ body.paused div.paused {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     display: block;
     text-align: center;
-    width: 4em;
+    width: 5em;
     height: 3em;
     line-height: 3em;
     font-size: 19px;
-    background-color: #DDD;
     margin: 0.1em;
     border-radius: 10px;
     -moz-user-select: none;
@@ -105,5 +104,51 @@ body.paused div.paused {
 
 .action.alt {
     color: #FFF;
-    background-color: blue;
+    background-color: #66A;
+}
+
+.action.ok {
+    color: #FFF;
+    background-color: #6A6;
+}
+
+.action.nok {
+    color: #FFF;
+    background-color: #A66;
+}
+
+.action-0,
+.action-1,
+.action-2 {
+    background-color: #DDD;
+}
+
+.action-3,
+.action-4 {
+    background-color: #BBB;
+}
+
+.action-5,
+.action-6 {
+    background-color: #888;
+}
+
+.action-0:before {
+    content: "set values";
+}
+
+.action-0.alt:before {
+    content: "set hints";
+}
+
+.action-0:after {
+    content: "space bar";
+    font-size: 12px;
+    padding-top: 17px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.66;
 }

@@ -29,8 +29,6 @@ The UX is somewhat inspired in Sudoku, the Clean One (for Android).
 
 ## TODO
 
-- display check result in button; mark check as having been used!
-- display hints as having been used
 - resolution independent / mobile tests
 
 ## Unlikely but eventually:

@@ -1,5 +1,4 @@
 import { storageFactory } from './storage.mjs';
-import { hasModifiers } from './keys.mjs';
 import { ElapsedTime } from './elapsed-time.mjs';
 import { Board } from './board.mjs';
 import { generateNumbers } from './numbers.mjs';
@@ -81,7 +80,6 @@ function onNumber(value) {
       //b.setSelectedNumber(-1);
     }
   }
-  b.draw();
 
   history.push(b.getState());
 
@@ -104,17 +102,22 @@ function updateHash() {
 function check() {
   const isValid = b.check((msg) => console.log(msg));
   b.draw();
-  console.log('check went ok?', isValid);
-
+  const act = actions.get('Check');
+  act.setLabel('Check *');
+  const cls = isValid ? 'ok' : 'nok';
+  act.toggle(cls);
+  
   setTimeout(() => {
     b.unsetInvalidCells();
     b.draw();
+    act.toggle(cls);
   }, 2500);
 
   return isValid;
 }
 
 function fillHints() {
+  actions.get('Hints').setLabel('Hints *');
   b.fillHints();
   b.draw();
 }
@@ -181,10 +184,7 @@ function onAction(action) {
 }
 
 document.body.addEventListener('keydown', (ev) => {
-  if (hasModifiers(ev)) {
-    return;
-  }
-  //console.log(ev.code);
+  // console.log({ code:ev.code, ctrl: ev.ctrlKey, alt: ev.altKey, shift: ev.shiftKey });
   switch (ev.code) {
     case 'ArrowLeft':
       if (lastPos[0] > 1) {
@@ -254,5 +254,7 @@ numbers = generateNumbers(document.querySelector('.numbers'), onNumber);
 actions = generateActions(document.querySelector('.actions'), onAction);
 
 updateCounters();
+b.setSelectedPosition(lastPos);
+b.draw();
 
 window.b = b; // TODO temp
