@@ -1,4 +1,3 @@
-import { obj2map, map2obj } from './utils.mjs';
 import { storageFactory } from './storage.mjs';
 import { hasModifiers } from './keys.mjs';
 import { ElapsedTime } from './elapsed-time.mjs';
@@ -31,8 +30,18 @@ function onClickCell(pos) {
   lastPos = pos;
 }
 
+const boardFromHash = location.hash && location.hash.substring(1);
+
+let gcdIdx =0;
+const getCellData = boardFromHash && function(pos) {
+  const v = parseInt(boardFromHash[gcdIdx++], 10) || undefined;
+  if (pos[0]===9 && pos[1]===9) { gcdIdx = 0; }
+  return {value:v, hints:[]};
+};
+
 b = new Board(document.querySelector('.board'), boardWidth, {
   onClickCell,
+  getCellData
 });
 
 history.push(b.getState());
@@ -77,6 +86,7 @@ function onNumber(value) {
   history.push(b.getState());
 
   updateCounters();
+  updateHash();
   b.draw();
 }
 
@@ -85,6 +95,10 @@ function updateCounters() {
   for (let n = 1; n <= 9; ++n) {
     numbers.get(n).setCount(9 - (hist[n] || 0));
   }
+}
+
+function updateHash() {
+  location.hash = b.getState81();
 }
 
 function check() {
@@ -113,6 +127,7 @@ function load() {
   b.setState(st);
   b.draw();
   updateCounters();
+  updateHash();
 }
 
 function save() {
@@ -127,6 +142,8 @@ function undo() {
   history.pop();
   b.setState(history[history.length - 1]);
   b.draw();
+  updateCounters();
+  updateHash();
 }
 
 function toggleHintMode() {
