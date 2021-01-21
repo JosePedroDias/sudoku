@@ -88,6 +88,7 @@ body.paused div.paused {
 }
 
 .action {
+    position: relative;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     display: block;
     text-align: center;
@@ -142,10 +143,10 @@ body.paused div.paused {
 }
 
 .action-0:after {
+    position: absolute;
     content: "space bar";
     font-size: 12px;
     padding-top: 17px;
-    position: absolute;
     left: 0;
     top: 0;
     width: 100%;
