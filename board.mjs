@@ -100,7 +100,7 @@ export function checkSequence(cells, kind, logFn) {
 }
 
 export class Board {
-  constructor(parentEl, boardWidth, { getCellData, onClickCell } = {}) {
+  constructor({ parentEl, boardWidth, getCellData, onClickCell } = {}) {
     this.boardWidth = boardWidth;
     this.cellWidth = boardWidth && Math.floor(boardWidth / 9);
 
@@ -133,10 +133,14 @@ export class Board {
       this.canvas.addEventListener('click', (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
-        const g = this.canvas.getBoundingClientRect();
-        const x = Math.floor((ev.clientX - g.x) / this.cellWidth);
-        const y = Math.floor((ev.clientY - g.y) / this.cellWidth);
-        const pos = [x + 1, y + 1];
+        const g = parentEl.getBoundingClientRect();
+        const cw = g.width / 9;
+        const x0 = ev.clientX - g.x;
+        const y0 = ev.clientY - g.y;
+        const pos = [
+          Math.floor(x0 / cw) + 1,
+          Math.floor(y0 / cw) + 1
+        ];
         onClickCell(pos);
       });
     }

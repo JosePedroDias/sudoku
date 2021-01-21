@@ -15,7 +15,6 @@ export class SAction {
   }
 
   setLabel(text) {
-    //this.el.firstChild.textNode.nodeValue = text;
     this.el.innerHTML = text;
   }
 }

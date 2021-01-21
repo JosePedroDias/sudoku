@@ -5,9 +5,14 @@ html, body {
 }
 
 .elapsed-time {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 1;
     text-align: center;
     color: #333;
-    font-size: 30px;
+    font-size: 40px;
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
@@ -15,6 +20,7 @@ html, body {
 
 .board {
     position: fixed;
+    transform-origin: 50% 50%;
     left: 50%;
     top:  40%;
     margin-left: calc(0.4 * -720px);
@@ -22,14 +28,16 @@ html, body {
 }
 
 div.paused {
+    position: fixed;
+    transform-origin: 50% 50%;
+    position: fixed;
     text-align: center;
     width: 10em;
     height: 5em;
     line-height: 5em;
-    font-size: 20px;
-    position: fixed;
+    font-size: 30px;
     left: 50%;
-    top: 50%;
+    top: 40%;
     margin-left: -5em;
     margin-top: -2.5em;
     display: none;
@@ -45,22 +53,23 @@ body.paused div.paused {
 
 .numbers {
     position: fixed;
+    transform-origin: 50% 100%;
     bottom: 0;
     left: 50%;
-    /* 211px width */
-    margin-left: -105px;
+    width: 320px;
+    margin-left: -155px;
 }
 
 .number {
     display: inline-block;
     text-align: center;
-    width: 4em;
-    height: 3.5em;
+    width: 6em;
+    height: 4.2em;
     background-color: #DDD;
-    margin: 0.2em;
-    padding-top: 0.5em;
-    padding-bottom: -0.5em;
-    border-radius: 10px;
+    margin: 0.3em;
+    padding-top: 0.75em;
+    padding-bottom: -0.75em;
+    border-radius: 15px;
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
@@ -72,32 +81,35 @@ body.paused div.paused {
 }
 
 .number-value {
-    font-size: 32px;
+    font-size: 40px;
 }
 
 .number-count {
-    font-size: 14px;
+    font-size: 22px;
+    opacity: 0.5;
 }
 
 .actions {
     position: fixed;
+    transform-origin: 100% 50%;
     top: 50%;
     right: 0;
-    /* 414px height */
-    margin-top: -207px;
+    height: 888px;
+    margin-top: -444px;
 }
 
 .action {
     position: relative;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
     display: block;
     text-align: center;
     width: 5em;
-    height: 3em;
-    line-height: 3em;
-    font-size: 19px;
-    margin: 0.1em;
-    border-radius: 10px;
+    height: 4em;
+    line-height: 4em;
+    font-size: 30px;
+    margin: 0.2em;
+    border-radius: 15px;
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
@@ -145,8 +157,8 @@ body.paused div.paused {
 .action-0:after {
     position: absolute;
     content: "space bar";
-    font-size: 12px;
-    padding-top: 17px;
+    font-size: 18px;
+    padding-top: 30px;
     left: 0;
     top: 0;
     width: 100%;
