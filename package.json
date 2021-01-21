@@ -11,11 +11,20 @@
   },
   "scripts": {
     "run": "npx https-localhost",
-    "server": "node --experimental-modules server.mjs"
+    "server": "node --experimental-modules server.mjs",
+    "test": "tap"
   },
   "engines": {
     "node": ">=12"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    
+  },
+  "devDependencies": {
+    "tap": "^14.11.0"
+  },
+  "tap": {
+    "coverage-map": "tap-map.js",
+    "check-coverage": true
+  }
 }
