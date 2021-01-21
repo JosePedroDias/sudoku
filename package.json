@@ -18,13 +18,11 @@
     "node": ">=12"
   },
   "dependencies": {
-    
   },
   "devDependencies": {
     "tap": "^14.11.0"
   },
   "tap": {
-    "coverage-map": "tap-map.js",
-    "check-coverage": true
+    "no-coverage": true
   }
 }

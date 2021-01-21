@@ -49,3 +49,14 @@ export function map2obj(m) {
   }
   return o;
 }
+
+export function trimStart(linesStr) {
+  const lines = linesStr.split('\n');
+  const lines2 = lines.map(l => l.trimStart());
+  return lines2.join('\n');
+}
+
+export function record(...args) {
+  record.calls.push(args);
+}
+record.calls = [];

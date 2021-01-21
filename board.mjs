@@ -226,11 +226,19 @@ export class Board {
   }
 
   getValidValues(pos) {
+    const ownCell = this.getCell(pos);
+    if (ownCell.value) {
+      return [];
+    }
     const relatedCells = this.getRelatedCells(pos);
     const relatedValues = relatedCells
       .filter((c) => c.value)
       .map((c) => c.value);
     return withoutRepeats(VALUES, relatedValues);
+  }
+
+  clear() {
+    this.getAllCells().forEach(c => c.clear());
   }
 
   getValueHistogram() {
@@ -385,11 +393,9 @@ class Cell {
     delete this.isInvalid;
   }
 
-  clear(hintsToo) {
+  clear() {
     this.value = undefined;
-    if (hintsToo) {
-      this.hints = [];
-    }
+    this.hints = [];
   }
 
   hasValue() {
@@ -398,12 +404,18 @@ class Cell {
 
   setValue(value) {
     this.value = value;
+    if (value) {
+      this.hints = [];
+    }
   }
 
   toggleValue(value) {
     const hadValue = this.hasValue();
     const hadSameValue = hadValue && value === this.value;
     this.value = hadSameValue ? undefined : value;
+    if (hadSameValue) {
+      this.hints = [];
+    }
     return !hadValue;
   }
 

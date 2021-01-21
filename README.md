@@ -7,8 +7,13 @@ The UX is somewhat inspired in Sudoku, the Clean One (for Android).
 
 ## References 
 
-- [canvas cheat sheet](https://simon.html5.org/dump/html5-canvas-cheat-sheet.html)
-- [sudopedia](http://sudopedia.enjoysudoku.com/)
+- sudoku
+    - [canvas cheat sheet](https://simon.html5.org/dump/html5-canvas-cheat-sheet.html)
+    - [sudopedia](http://sudopedia.enjoysudoku.com/)
+- tap
+    - [CLI](https://node-tap.org/docs/cli/)
+    - [writing well structured tests](https://node-tap.org/docs/structure/)
+    - [API/asserts](https://node-tap.org/docs/api/asserts/)
 
 ## Local HTTPS Dev
 
