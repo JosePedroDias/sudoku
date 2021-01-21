@@ -6,9 +6,10 @@ html, body {
 
 .elapsed-time {
     position: fixed;
-    left: 0;
+    left: 40%;
     top: 0;
-    width: 100%;
+    width: 6em;
+    margin-left: -3em;
     z-index: 1;
     text-align: center;
     color: #333;
@@ -16,15 +17,16 @@ html, body {
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
+    pointer-events: none;
 }
 
 .board {
     position: fixed;
     transform-origin: 50% 50%;
-    left: 50%;
-    top:  40%;
-    margin-left: calc(0.4 * -720px);
-    margin-top:  calc(0.4 * -720px);
+    left: 40%;
+    top:  38%;
+    margin-left: -350px;
+    margin-top:  -350px;
 }
 
 div.paused {
@@ -55,7 +57,7 @@ body.paused div.paused {
     position: fixed;
     transform-origin: 50% 100%;
     bottom: 0;
-    left: 50%;
+    left: 40%;
     width: 320px;
     margin-left: -155px;
 }

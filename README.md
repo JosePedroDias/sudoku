@@ -32,14 +32,11 @@ The UX is somewhat inspired in Sudoku, the Clean One (for Android).
     http-server &
     lt --port 8080 --subdomain sdku
 
-## TODO
+## TODO (eventually)
 
-- resolution independent / mobile tests
-
-## Unlikely but eventually:
 - solving
     - implement solving algorithms
     - classify difficulty based on histogram and number/frequency of moves to solve
     
-- generating
+- generating boards
     ...

@@ -4,9 +4,8 @@ import { Board } from './board.mjs';
 import { generateNumbers } from './numbers.mjs';
 import { generateActions } from './actions.mjs';
 
-const SCALE = Math.min(...[window.innerWidth, window.innerHeight]) / 1000;
-
-function scaleUI(scl) {
+function scaleUI() {
+  const scale = Math.min(...[window.innerWidth, window.innerHeight]) / 1000;
   [
     document.querySelector('.elapsed-time'),
     document.querySelector('.board'),
@@ -14,11 +13,11 @@ function scaleUI(scl) {
     document.querySelector('.actions'),
     document.querySelector('.numbers'),
 
-  ].forEach(el => el.style.transform = `scale(${scl.toFixed(2)})`);
+  ].forEach(el => el.style.transform = `scale(${scale.toFixed(2)})`);
 }
 
 
-const boardWidth = 720 * 0.8;
+const boardWidth = 700;
 
 const storage = storageFactory('sdku');
 
@@ -269,7 +268,8 @@ document.body.addEventListener('keydown', (ev) => {
 numbers = generateNumbers(document.querySelector('.numbers'), onNumber);
 actions = generateActions(document.querySelector('.actions'), onAction);
 
-scaleUI(SCALE);
+scaleUI();
+window.addEventListener('resize', scaleUI);
 
 updateCounters();
 b.setSelectedPosition(lastPos);
