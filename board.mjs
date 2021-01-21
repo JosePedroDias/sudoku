@@ -11,7 +11,9 @@ const BG_SELECTED_NUMBER_COLOR = '#669';
 const SELECTED_POSITION_COLOR = '#444'
 const BG_INVALID_COLOR = '#966';
 const NUMBER_COLOR = '#000';
+const NUMBER_READONLY_COLOR = '#633';
 const NUMBER_SELECTED_COLOR = '#FFF';
+const NUMBER_SELECTED_READONLY_COLOR = '#DBB';
 
 const VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -217,6 +219,14 @@ export class Board {
     return getTilePositions(n).map((pos) => this.getCell(pos));
   }
 
+  getCellsWithValues() {
+    return this.getAllCells().filter((c) => c.value);
+  }
+
+  getCellsWithoutValues() {
+    return this.getAllCells().filter((c) => !c.value);
+  }
+
   getRelatedCells(pos) {
     const ownCell = this.getCell(pos);
     const [x, y] = pos;
@@ -243,6 +253,10 @@ export class Board {
 
   clear() {
     this.getAllCells().forEach(c => c.clear());
+  }
+
+  setValuesReadOnly() {
+    this.getCellsWithValues().forEach(c => c.readOnly = true);
   }
 
   getValueHistogram() {
@@ -288,8 +302,8 @@ export class Board {
   getState() {
     const state = [];
     for (let pos of getAllPositions()) {
-      const { value, hints } = this.cells.get(hashPos(pos));
-      state.push([value || 0, ...hints]);
+      const { value, readOnly, hints } = this.cells.get(hashPos(pos));
+      state.push([value || 0, readOnly, ...hints]);
     }
     return state;
   }
@@ -354,9 +368,10 @@ export class Board {
   setState(state) {
     const cellsLeft = [...state];
     for (let pos of getAllPositions()) {
-      const [value, ...hints] = cellsLeft.shift();
+      const [value, readOnly, ...hints] = cellsLeft.shift();
       const c = this.getCell(pos);
       c.value = value || undefined;
+      readOnly ? c.readOnly = true : delete c.readOnly;
       c.hints = hints;
     }
   }
@@ -400,6 +415,7 @@ class Cell {
   clear() {
     this.value = undefined;
     this.hints = [];
+    delete this.readOnly;
   }
 
   hasValue() {
@@ -474,8 +490,10 @@ class Cell {
     }
 
     const isFilled = this.isInvalid || hasSelectedNumber;
-    const isSeleted = hasSelectedPos;
+    const isSelected = hasSelectedPos;
+    const isReadOnly = this.readOnly;
 
+    // draw filled circle bg
     if (isFilled) {
       ctx.fillStyle = this.isInvalid
         ? BG_INVALID_COLOR
@@ -485,14 +503,21 @@ class Cell {
       ctx.fill();
     }
 
-    if (isSeleted) {
+    // draw circle stroke overlay
+    if (isSelected) {
       ctx.strokeStyle = SELECTED_POSITION_COLOR;
       ctx.beginPath();
       ctx.arc(x0 + w * 0.5, y0 + w * 0.5, w * 0.46, 0, PI2);
       ctx.stroke();
     }
 
-    ctx.fillStyle = isFilled ? NUMBER_SELECTED_COLOR : NUMBER_COLOR;
+    // draw value/hints text
+    if (isFilled) {
+      ctx.fillStyle = isReadOnly ? NUMBER_SELECTED_READONLY_COLOR : NUMBER_SELECTED_COLOR;
+    } else {
+      ctx.fillStyle = isReadOnly ? NUMBER_READONLY_COLOR : NUMBER_COLOR;
+    }
+    
 
     if (this.value) {
       ctx.font = this.fontV;

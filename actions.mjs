@@ -26,6 +26,8 @@ export function generateActions(containerEl, onAction) {
     'value/hint',
     'Pause',
     'Undo',
+    'New',
+    'Begin',
     'Load',
     'Save',
     'Hints',

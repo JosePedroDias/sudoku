@@ -3,7 +3,7 @@
 ## Motivation
 
 A sudoku browser game in recent JS, drawn in canvas. Hopefully mobile friendly.  
-The UX is somewhat inspired in Sudoku, the Clean One (for Android).
+The UX is somewhat inspired in [Sudoku, the Clean One](https://play.google.com/store/apps/details?id=ee.dustland.android.dustlandsudoku).
 
 ## References 
 
@@ -33,6 +33,10 @@ The UX is somewhat inspired in Sudoku, the Clean One (for Android).
     lt --port 8080 --subdomain sdku
 
 ## TODO (eventually)
+
+- custom font for numbers? (round, easy to read)
+- icons for actions
+- dark theme
 
 - solving
     - implement solving algorithms

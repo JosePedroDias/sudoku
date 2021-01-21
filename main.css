@@ -38,8 +38,8 @@ div.paused {
     height: 5em;
     line-height: 5em;
     font-size: 30px;
-    left: 50%;
-    top: 40%;
+    left: 40%;
+    top:  38%;
     margin-left: -5em;
     margin-top: -2.5em;
     display: none;
@@ -58,14 +58,14 @@ body.paused div.paused {
     transform-origin: 50% 100%;
     bottom: 0;
     left: 40%;
-    width: 320px;
-    margin-left: -155px;
+    width: 270px;
+    margin-left: -135px;
 }
 
 .number {
     display: inline-block;
     text-align: center;
-    width: 6em;
+    width: 5em;
     height: 4.2em;
     background-color: #DDD;
     margin: 0.3em;
@@ -96,8 +96,8 @@ body.paused div.paused {
     transform-origin: 100% 50%;
     top: 50%;
     right: 0;
-    height: 888px;
-    margin-top: -444px;
+    height: 812px;
+    margin-top: -406px;
 }
 
 .action {
@@ -106,10 +106,10 @@ body.paused div.paused {
     font-weight: bold;
     display: block;
     text-align: center;
-    width: 5em;
-    height: 4em;
-    line-height: 4em;
-    font-size: 30px;
+    width: 4em;
+    height: 3em;
+    line-height: 3em;
+    font-size: 28px;
     margin: 0.2em;
     border-radius: 15px;
     -moz-user-select: none;
@@ -139,12 +139,14 @@ body.paused div.paused {
 }
 
 .action-3,
-.action-4 {
+.action-4,
+.action-5,
+.action-6 {
     background-color: #BBB;
 }
 
-.action-5,
-.action-6 {
+.action-7,
+.action-8 {
     background-color: #888;
 }
 
@@ -159,8 +161,8 @@ body.paused div.paused {
 .action-0:after {
     position: absolute;
     content: "space bar";
-    font-size: 18px;
-    padding-top: 30px;
+    font-size: 16px;
+    padding-top: 20px;
     left: 0;
     top: 0;
     width: 100%;

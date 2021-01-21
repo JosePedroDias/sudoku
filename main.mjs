@@ -65,6 +65,7 @@ et.start();
 
 function onNumber(value) {
   const c = b.getCell(lastPos);
+  if (c.readOnly) { return; }
   if (inHintMode) {
     c.toggleHint(value);
   } else {
@@ -114,7 +115,7 @@ function updateHash() {
   location.hash = b.getState81();
 }
 
-function check() {
+function actionCheck() {
   const isValid = b.check((msg) => console.log(msg));
   b.draw();
   const act = actions.get('Check');
@@ -131,45 +132,47 @@ function check() {
   return isValid;
 }
 
-function fillHints() {
+function actionHints() {
   actions.get('Hints').setLabel('Hints *');
   b.fillHints();
   b.draw();
 }
 
-function load() {
+function actionLoad() {
   const dt = storage.getItem('time');
   et.reset(dt);
   const st = storage.getItem('state');
   history = [st];
   b.setState(st);
-  b.draw();
+  
   updateCounters();
   updateHash();
+  b.draw();
 }
 
-function save() {
+function actionSave() {
   storage.setItem('time', et.dt);
   storage.setItem('state', b.getState());
 }
 
-function undo() {
+function actionUndo() {
   if (history.length < 2) {
     return;
   }
   history.pop();
   b.setState(history[history.length - 1]);
-  b.draw();
+  
   updateCounters();
   updateHash();
+  b.draw();
 }
 
-function toggleHintMode() {
+function actionToggleMode() {
   actions.get('value/hint').toggle();
   inHintMode = !inHintMode;
 }
 
-function togglePause() {
+function actionTogglePause() {
   actions.get('Pause').toggle();
   isPaused = !isPaused;
   document.body.classList.toggle('paused');
@@ -180,21 +183,38 @@ function togglePause() {
   }
 }
 
+function actionBegin() {
+  b.setValuesReadOnly();
+  b.draw();
+  et.reset(0);
+}
+
+function actionNew() {
+  b.clear();
+  updateCounters();
+  updateHash();
+  b.draw();
+}
+
 function onAction(action) {
   if (action === 'value/hint') {
-    toggleHintMode();
+    actionToggleMode();
   } else if (action === 'Pause') {
-    togglePause();
+    actionTogglePause();
   } else if (action === 'Undo') {
-    undo();
+    actionUndo();
+  } else if (action === 'New') {
+    actionNew();
+  } else if (action === 'Begin') {
+    actionBegin();
   } else if (action === 'Load') {
-    load();
+    actionLoad();
   } else if (action === 'Save') {
-    save();
+    actionSave();
   } else if (action === 'Hints') {
-    fillHints();
+    actionHints();
   } else if (action === 'Check') {
-    check();
+    actionCheck();
   }
 }
 
@@ -222,25 +242,31 @@ document.body.addEventListener('keydown', (ev) => {
       }
       break;
     case 'Space':
-      toggleHintMode();
+      actionToggleMode();
       break;
     case 'KeyP':
-      togglePause();
-      break;
-    case 'KeyL':
-      load();
-      break;
-    case 'KeyS':
-      save();
+      actionTogglePause();
       break;
     case 'KeyU':
-      undo();
+      actionUndo();
+      break;
+    case 'KeyN':
+      actionNew();
+      break;
+    case 'KeyB':
+      actionBegin();
+      break;
+    case 'KeyL':
+      actionLoad();
+      break;
+    case 'KeyS':
+      actionSave();
       break;
     case 'KeyH':
-      fillHints();
+      actionHints();
       break;
     case 'KeyC':
-      check();
+      actionCheck();
       break;
     case 'Digit1':
     case 'Digit2':
