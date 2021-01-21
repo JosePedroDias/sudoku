@@ -100,15 +100,9 @@ export function checkSequence(cells, kind, logFn) {
 }
 
 export class Board {
-  constructor(parentEl, boardWidth, { getCellData, onClickCell }) {
-    this.canvas = document.createElement('canvas');
-    this.canvas.setAttribute('width', boardWidth);
-    this.canvas.setAttribute('height', boardWidth);
-    parentEl.appendChild(this.canvas);
-    this.ctx = this.canvas.getContext('2d');
+  constructor(parentEl, boardWidth, { getCellData, onClickCell } = {}) {
     this.boardWidth = boardWidth;
-    this.cellWidth = Math.floor(boardWidth / 9);
-    this.selectedPosition = [-1, -1];
+    this.cellWidth = boardWidth && Math.floor(boardWidth / 9);
 
     this.cells = new Map();
     for (let pos of getAllPositions()) {
@@ -121,22 +115,31 @@ export class Board {
       );
     }
 
-    this.ctx.textAlign = 'center';
-    this.ctx.textBaseline = 'middle';
-    this.ctx.lineCap = 'round';
-    this.ctx.lineJoin = 'round';
+    if (boardWidth) {
+      this.canvas = document.createElement('canvas');
+      this.canvas.setAttribute('width', boardWidth);
+      this.canvas.setAttribute('height', boardWidth);
+      parentEl.appendChild(this.canvas);
+      this.ctx = this.canvas.getContext('2d');
+      this.selectedPosition = [-1, -1];
 
-    this.draw();
+      this.ctx.textAlign = 'center';
+      this.ctx.textBaseline = 'middle';
+      this.ctx.lineCap = 'round';
+      this.ctx.lineJoin = 'round';
 
-    this.canvas.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      ev.stopPropagation();
-      const g = this.canvas.getBoundingClientRect();
-      const x = Math.floor((ev.clientX - g.x) / this.cellWidth);
-      const y = Math.floor((ev.clientY - g.y) / this.cellWidth);
-      const pos = [x + 1, y + 1];
-      onClickCell(pos);
-    });
+      this.draw();
+
+      this.canvas.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        const g = this.canvas.getBoundingClientRect();
+        const x = Math.floor((ev.clientX - g.x) / this.cellWidth);
+        const y = Math.floor((ev.clientY - g.y) / this.cellWidth);
+        const pos = [x + 1, y + 1];
+        onClickCell(pos);
+      });
+    }
   }
 
   draw() {
@@ -365,11 +368,13 @@ class Cell {
     this.value = value;
     this.hints = hints || [];
 
-    this.width = width;
-    const hV = Math.floor(width * 0.8);
-    const hH = Math.floor(width * 0.25);
-    this.fontV = `${hV}px ${FONT}`;
-    this.fontH = `${hH}px ${FONT}`;
+    if (width) {
+      this.width = width;
+      const hV = Math.floor(width * 0.8);
+      const hH = Math.floor(width * 0.25);
+      this.fontV = `${hV}px ${FONT}`;
+      this.fontH = `${hH}px ${FONT}`;
+    }
   }
 
   setInvalid() {

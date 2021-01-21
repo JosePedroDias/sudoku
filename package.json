@@ -10,7 +10,8 @@
     "url": "https://github.com/josepedrodias/rowing-metronome"
   },
   "scripts": {
-    "run": "npx https-localhost"
+    "run": "npx https-localhost",
+    "server": "node --experimental-modules server.mjs"
   },
   "engines": {
     "node": ">=12"
