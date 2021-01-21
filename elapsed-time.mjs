@@ -15,11 +15,15 @@ export class ElapsedTime {
 
   start() {
     this.startDate = new Date(Date.now() - this.dt * 1000);
-    this.timer = setInterval(this.onTick, 1000);
+    if (!this.timer) {
+      this.timer = setInterval(this.onTick, 1000);
+    }
   }
 
   stop() {
+    if (!this.timer) { return; }
     clearInterval(this.timer);
+    delete this.timer;
   }
 
   reset(dt) {

@@ -16,15 +16,14 @@ function scaleUI() {
   ].forEach(el => el.style.transform = `scale(${scale.toFixed(2)})`);
 }
 
-
-const boardWidth = 700;
-
 const storage = storageFactory('sdku');
+
+const et = new ElapsedTime(document.querySelector('.elapsed-time'));
+const numbers = generateNumbers(document.querySelector('.numbers'), onNumber);
+const actions = generateActions(document.querySelector('.actions'), onAction);
 
 let b,
   lastPos = [5, 5],
-  numbers,
-  actions,
   history = [],
   inHintMode = false,
   isPaused = false;
@@ -33,7 +32,6 @@ function onClickCell(pos) {
   const c = b.getCell(pos);
 
   b.setSelectedPosition(pos);
-  //b.setSelectedNumber(c.value || -1);
   if (c.value) {
     b.setSelectedNumber(c.value);
   }
@@ -53,15 +51,16 @@ const getCellData = boardFromHash && function(pos) {
 
 b = new Board({
   parentEl: document.querySelector('.board'),
-  boardWidth, 
+  boardWidth: 700, 
   onClickCell,
   getCellData
 });
 
+if (!boardFromHash) {
+  actionLoad();
+  et.start();
+}
 history.push(b.getState());
-
-const et = new ElapsedTime(document.querySelector('.elapsed-time'));
-et.start();
 
 function onNumber(value) {
   const c = b.getCell(lastPos);
@@ -92,8 +91,6 @@ function onNumber(value) {
       } else {
         b.setSelectedNumber(c.value);
       }
-    } else {
-      //b.setSelectedNumber(-1);
     }
   }
 
@@ -140,7 +137,9 @@ function actionHints() {
 
 function actionLoad() {
   const dt = storage.getItem('time');
-  et.reset(dt);
+  if (dt > et.dt) {
+    et.reset(dt);
+  }
   const st = storage.getItem('state');
   history = [st];
   b.setState(st);
@@ -187,6 +186,7 @@ function actionBegin() {
   b.setValuesReadOnly();
   b.draw();
   et.reset(0);
+  et.start();
 }
 
 function actionNew() {
@@ -217,6 +217,10 @@ function onAction(action) {
     actionCheck();
   }
 }
+
+window.addEventListener('beforeunload', () => {
+  actionSave();
+});
 
 document.body.addEventListener('keydown', (ev) => {
   // console.log({ code:ev.code, ctrl: ev.ctrlKey, alt: ev.altKey, shift: ev.shiftKey });
@@ -290,9 +294,6 @@ document.body.addEventListener('keydown', (ev) => {
   ev.preventDefault();
   b.draw();
 });
-
-numbers = generateNumbers(document.querySelector('.numbers'), onNumber);
-actions = generateActions(document.querySelector('.actions'), onAction);
 
 scaleUI();
 window.addEventListener('resize', scaleUI);
