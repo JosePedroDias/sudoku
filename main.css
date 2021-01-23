@@ -1,171 +1,172 @@
-html, body {
-    border: 0;
-    overflow: hidden;
-    font-family: sans-serif;
+html,
+body {
+  border: 0;
+  overflow: hidden;
+  font-family: sans-serif;
 }
 
 .elapsed-time {
-    position: fixed;
-    left: 40%;
-    top: 0;
-    width: 6em;
-    margin-left: -3em;
-    z-index: 1;
-    text-align: center;
-    color: #333;
-    font-size: 40px;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    user-select: none;
-    pointer-events: none;
+  position: fixed;
+  left: 40%;
+  top: 0;
+  width: 6em;
+  margin-left: -3em;
+  z-index: 1;
+  text-align: center;
+  color: #333;
+  font-size: 40px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
 }
 
 .board {
-    position: fixed;
-    transform-origin: 50% 50%;
-    left: 40%;
-    top:  38%;
-    margin-left: -350px;
-    margin-top:  -350px;
+  position: fixed;
+  transform-origin: 50% 50%;
+  left: 40%;
+  top: 38%;
+  margin-left: -350px;
+  margin-top: -350px;
 }
 
 div.paused {
-    position: fixed;
-    transform-origin: 50% 50%;
-    position: fixed;
-    text-align: center;
-    width: 10em;
-    height: 5em;
-    line-height: 5em;
-    font-size: 30px;
-    left: 40%;
-    top:  38%;
-    margin-left: -5em;
-    margin-top: -2.5em;
-    display: none;
+  position: fixed;
+  transform-origin: 50% 50%;
+  position: fixed;
+  text-align: center;
+  width: 10em;
+  height: 5em;
+  line-height: 5em;
+  font-size: 30px;
+  left: 40%;
+  top: 38%;
+  margin-left: -5em;
+  margin-top: -2.5em;
+  display: none;
 }
 
 body.paused .board {
-    display: none;
+  display: none;
 }
 
 body.paused div.paused {
-    display: block;
+  display: block;
 }
 
 .numbers {
-    position: fixed;
-    transform-origin: 50% 100%;
-    bottom: 0;
-    left: 40%;
-    width: 270px;
-    margin-left: -135px;
+  position: fixed;
+  transform-origin: 50% 100%;
+  bottom: 0;
+  left: 40%;
+  width: 270px;
+  margin-left: -135px;
 }
 
 .number {
-    display: inline-block;
-    text-align: center;
-    width: 5em;
-    height: 4.2em;
-    background-color: #DDD;
-    margin: 0.3em;
-    padding-top: 0.75em;
-    padding-bottom: -0.75em;
-    border-radius: 15px;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    user-select: none;
+  display: inline-block;
+  text-align: center;
+  width: 5em;
+  height: 4.2em;
+  background-color: #ddd;
+  margin: 0.3em;
+  padding-top: 0.75em;
+  padding-bottom: -0.75em;
+  border-radius: 15px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .number:hover,
 .action:hover {
-    background-color: #FDD;
+  background-color: #fdd;
 }
 
 .number-value {
-    font-size: 40px;
+  font-size: 40px;
 }
 
 .number-count {
-    font-size: 22px;
-    opacity: 0.5;
+  font-size: 22px;
+  opacity: 0.5;
 }
 
 .actions {
-    position: fixed;
-    transform-origin: 100% 50%;
-    top: 50%;
-    right: 0;
-    height: 812px;
-    margin-top: -406px;
+  position: fixed;
+  transform-origin: 100% 50%;
+  top: 50%;
+  right: 0;
+  height: 812px;
+  margin-top: -406px;
 }
 
 .action {
-    position: relative;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-weight: bold;
-    display: block;
-    text-align: center;
-    width: 4em;
-    height: 3em;
-    line-height: 3em;
-    font-size: 28px;
-    margin: 0.2em;
-    border-radius: 15px;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    user-select: none;
+  position: relative;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+  width: 4em;
+  height: 3em;
+  line-height: 3em;
+  font-size: 28px;
+  margin: 0.2em;
+  border-radius: 15px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .action.alt {
-    color: #FFF;
-    background-color: #66A;
+  color: #fff;
+  background-color: #66a;
 }
 
 .action.ok {
-    color: #FFF;
-    background-color: #6A6;
+  color: #fff;
+  background-color: #6a6;
 }
 
 .action.nok {
-    color: #FFF;
-    background-color: #A66;
+  color: #fff;
+  background-color: #a66;
 }
 
 .action-0,
 .action-1,
 .action-2 {
-    background-color: #DDD;
+  background-color: #ddd;
 }
 
 .action-3,
 .action-4,
 .action-5,
 .action-6 {
-    background-color: #BBB;
+  background-color: #bbb;
 }
 
 .action-7,
 .action-8 {
-    background-color: #888;
+  background-color: #888;
 }
 
 .action-0:before {
-    content: "set values";
+  content: "set values";
 }
 
 .action-0.alt:before {
-    content: "set hints";
+  content: "set hints";
 }
 
 .action-0:after {
-    position: absolute;
-    content: "space bar";
-    font-size: 16px;
-    padding-top: 20px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.66;
+  position: absolute;
+  content: "space bar";
+  font-size: 16px;
+  padding-top: 20px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.66;
 }

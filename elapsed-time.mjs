@@ -21,7 +21,9 @@ export class ElapsedTime {
   }
 
   stop() {
-    if (!this.timer) { return; }
+    if (!this.timer) {
+      return;
+    }
     clearInterval(this.timer);
     delete this.timer;
   }

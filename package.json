@@ -18,9 +18,18 @@
     "node": ">=12"
   },
   "dependencies": {
+    "eslint-plugin-import": "^2.22.1"
   },
   "devDependencies": {
+    "eslint": "^7.18.0",
+    "prettier": "^2.2.1",
     "tap": "^14.11.0"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true
   },
   "tap": {
     "no-coverage": true,

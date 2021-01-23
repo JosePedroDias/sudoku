@@ -12,8 +12,7 @@ function scaleUI() {
     document.querySelector('div.paused'),
     document.querySelector('.actions'),
     document.querySelector('.numbers'),
-
-  ].forEach(el => el.style.transform = `scale(${scale.toFixed(2)})`);
+  ].forEach((el) => (el.style.transform = `scale(${scale.toFixed(2)})`));
 }
 
 const storage = storageFactory('sdku');
@@ -43,17 +42,21 @@ function onClickCell(pos) {
 const boardFromHash = location.hash && location.hash.substring(1);
 
 let gcdIdx = 0;
-const getCellData = boardFromHash && function(pos) {
-  const v = parseInt(boardFromHash[gcdIdx++], 10) || undefined;
-  if (pos[0] === 9 && pos[1] === 9) { gcdIdx = 0; }
-  return {value:v, hints:[]};
-};
+const getCellData =
+  boardFromHash &&
+  function (pos) {
+    const v = parseInt(boardFromHash[gcdIdx++], 10) || undefined;
+    if (pos[0] === 9 && pos[1] === 9) {
+      gcdIdx = 0;
+    }
+    return { value: v, hints: [] };
+  };
 
 b = new Board({
   parentEl: document.querySelector('.board'),
-  boardWidth: 700, 
+  boardWidth: 700,
   onClickCell,
-  getCellData
+  getCellData,
 });
 
 if (!boardFromHash) {
@@ -64,7 +67,9 @@ history.push(b.getState());
 
 function onNumber(value) {
   const c = b.getCell(lastPos);
-  if (c.readOnly) { return; }
+  if (c.readOnly) {
+    return;
+  }
   if (inHintMode) {
     c.toggleHint(value);
   } else {
@@ -74,7 +79,9 @@ function onNumber(value) {
     if (oldValue) {
       relatedCells.forEach((c2) => {
         // not to set hints on unvisited cells
-        if (c2.hints.length === 0) { return; }
+        if (c2.hints.length === 0) {
+          return;
+        }
         const valids = b.getValidValues(c2.position);
         if (valids.indexOf(oldValue) !== -1) {
           // helps a bit...
@@ -119,7 +126,7 @@ function actionCheck() {
   act.setLabel('Check *');
   const cls = isValid ? 'ok' : 'nok';
   act.toggle(cls);
-  
+
   setTimeout(() => {
     b.unsetInvalidCells();
     b.draw();
@@ -143,7 +150,7 @@ function actionLoad() {
   const st = storage.getItem('state');
   history = [st];
   b.setState(st);
-  
+
   updateCounters();
   updateHash();
   b.draw();
@@ -160,7 +167,7 @@ function actionUndo() {
   }
   history.pop();
   b.setState(history[history.length - 1]);
-  
+
   updateCounters();
   updateHash();
   b.draw();

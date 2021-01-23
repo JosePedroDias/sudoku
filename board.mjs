@@ -8,7 +8,7 @@ const GRID_COLOR = '#696';
 const BG_BOARD_COLOR = '#FFF';
 const BG_BOARD2_COLOR = '#F1F1F1';
 const BG_SELECTED_NUMBER_COLOR = '#669';
-const SELECTED_POSITION_COLOR = '#444'
+const SELECTED_POSITION_COLOR = '#444';
 const BG_INVALID_COLOR = '#966';
 const NUMBER_COLOR = '#000';
 const NUMBER_READONLY_COLOR = '#633';
@@ -139,10 +139,7 @@ export class Board {
         const cw = g.width / 9;
         const x0 = ev.clientX - g.x;
         const y0 = ev.clientY - g.y;
-        const pos = [
-          Math.floor(x0 / cw) + 1,
-          Math.floor(y0 / cw) + 1
-        ];
+        const pos = [Math.floor(x0 / cw) + 1, Math.floor(y0 / cw) + 1];
         onClickCell(pos);
       });
     }
@@ -252,11 +249,11 @@ export class Board {
   }
 
   clear() {
-    this.getAllCells().forEach(c => c.clear());
+    this.getAllCells().forEach((c) => c.clear());
   }
 
   setValuesReadOnly() {
-    this.getCellsWithValues().forEach(c => c.readOnly = true);
+    this.getCellsWithValues().forEach((c) => (c.readOnly = true));
   }
 
   getValueHistogram() {
@@ -371,7 +368,7 @@ export class Board {
       const [value, readOnly, ...hints] = cellsLeft.shift();
       const c = this.getCell(pos);
       c.value = value || undefined;
-      readOnly ? c.readOnly = true : delete c.readOnly;
+      readOnly ? (c.readOnly = true) : delete c.readOnly;
       c.hints = hints;
     }
   }
@@ -513,11 +510,12 @@ class Cell {
 
     // draw value/hints text
     if (isFilled) {
-      ctx.fillStyle = isReadOnly ? NUMBER_SELECTED_READONLY_COLOR : NUMBER_SELECTED_COLOR;
+      ctx.fillStyle = isReadOnly
+        ? NUMBER_SELECTED_READONLY_COLOR
+        : NUMBER_SELECTED_COLOR;
     } else {
       ctx.fillStyle = isReadOnly ? NUMBER_READONLY_COLOR : NUMBER_COLOR;
     }
-    
 
     if (this.value) {
       ctx.font = this.fontV;

@@ -52,7 +52,7 @@ export function map2obj(m) {
 
 export function trimStart(linesStr) {
   const lines = linesStr.split('\n');
-  const lines2 = lines.map(l => l.trimStart());
+  const lines2 = lines.map((l) => l.trimStart());
   return lines2.join('\n');
 }
 

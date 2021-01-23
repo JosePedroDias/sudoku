@@ -7,9 +7,11 @@ The UX is somewhat inspired in [Sudoku, the Clean One](https://play.google.com/s
 
 ## References 
 
-- sudoku
+- canvas
     - [canvas cheat sheet](https://simon.html5.org/dump/html5-canvas-cheat-sheet.html)
+- sudoku
     - [sudopedia](http://sudopedia.enjoysudoku.com/)
+    - [sudoju wiki](https://www.sudokuwiki.org/sudoku.htm)
 - tap
     - [CLI](https://node-tap.org/docs/cli/)
     - [writing well structured tests](https://node-tap.org/docs/structure/)

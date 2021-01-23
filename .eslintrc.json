@@ -1,0 +1,17 @@
+{
+    "settings": {
+        "import/extensions": [
+            ".mjs",
+            ".js"
+        ],
+        "import/resolver": {
+            "node": {
+                "extensions": [
+                    ".mjs",
+                    ".js"
+                ]
+            }
+        }
+    },
+    "extends": "eslint:recommended"
+}
