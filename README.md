@@ -7,8 +7,9 @@ The UX is somewhat inspired in [Sudoku, the Clean One](https://play.google.com/s
 
 ## References
 
-- canvas
+- JS
   - [canvas cheat sheet](https://simon.html5.org/dump/html5-canvas-cheat-sheet.html)
+  - [dark mode](https://flaviocopes.com/javascript-detect-dark-mode/)
 - sudoku
   - [sudopedia](http://sudopedia.enjoysudoku.com/)
   - [sudoju wiki](https://www.sudokuwiki.org/sudoku.htm)
@@ -16,6 +17,24 @@ The UX is somewhat inspired in [Sudoku, the Clean One](https://play.google.com/s
   - [CLI](https://node-tap.org/docs/cli/)
   - [writing well structured tests](https://node-tap.org/docs/structure/)
   - [API/asserts](https://node-tap.org/docs/api/asserts/)
+- fonts
+
+  - [icomoon app](https://icomoon.io/app/)
+  - [quicksand](https://www.fontsquirrel.com/fonts/quicksand)
+  - [convertio](https://convertio.co/otf-woff/)
+
+  values/hints pen/pencil
+  undo undo-alt
+  new trash
+  pause pause/play
+  begin stopwatch
+  load load
+  save save
+  hints magic
+  check check
+
+  theme paint
+  generate generate
 
 ## Vocabulary in source code
 

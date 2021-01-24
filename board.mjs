@@ -1,19 +1,14 @@
 import { repeated, withoutRepeats, repeat } from './utils.mjs';
+import { theme } from './theme.mjs';
 
 const PI2 = 2 * Math.PI;
 
-const FONT = 'sans-serif';
+//const FONT = 'sans-serif';
+const FONT = 'quicksand';
 
-const GRID_COLOR = '#696';
-const BG_BOARD_COLOR = '#FFF';
-const BG_BOARD2_COLOR = '#F1F1F1';
-const BG_SELECTED_NUMBER_COLOR = '#669';
-const SELECTED_POSITION_COLOR = '#444';
-const BG_INVALID_COLOR = '#966';
-const NUMBER_COLOR = '#000';
-const NUMBER_READONLY_COLOR = '#633';
-const NUMBER_SELECTED_COLOR = '#FFF';
-const NUMBER_SELECTED_READONLY_COLOR = '#DBB';
+function setBold(str, on) {
+  return `${on ? 'bold ' : ''}${str}`;
+}
 
 export const VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -151,10 +146,10 @@ export class Board {
     const c = this.ctx;
     const cw = this.cellWidth;
 
-    c.fillStyle = BG_BOARD_COLOR;
+    c.fillStyle = theme.bgBoard;
     c.fillRect(0, 0, this.boardWidth, this.boardWidth);
 
-    c.fillStyle = BG_BOARD2_COLOR;
+    c.fillStyle = theme.bgBoard2;
 
     for (let [cx, cy] of getAllPositions()) {
       --cx;
@@ -170,7 +165,7 @@ export class Board {
       );
     }
 
-    c.strokeStyle = GRID_COLOR;
+    c.strokeStyle = theme.grid;
     c.lineWidth = this.boardWidth / 200;
     const g = 0.1;
     c.beginPath();
@@ -496,9 +491,7 @@ class Cell {
 
     // draw filled circle bg
     if (isFilled) {
-      ctx.fillStyle = this.isInvalid
-        ? BG_INVALID_COLOR
-        : BG_SELECTED_NUMBER_COLOR;
+      ctx.fillStyle = this.isInvalid ? theme.bgInvalid : theme.bgSelectedNumber;
       ctx.beginPath();
       ctx.arc(x0 + w * 0.5, y0 + w * 0.5, w * 0.46, 0, PI2);
       ctx.fill();
@@ -506,29 +499,28 @@ class Cell {
 
     // draw circle stroke overlay
     if (isSelected) {
-      ctx.strokeStyle = SELECTED_POSITION_COLOR;
+      ctx.strokeStyle = theme.selectedPosition;
       ctx.beginPath();
-      ctx.arc(x0 + w * 0.5, y0 + w * 0.5, w * 0.46, 0, PI2);
+      ctx.arc(x0 + w * 0.5, y0 + w * 0.5, w * 0.47, 0, PI2);
       ctx.stroke();
     }
 
     // draw value/hints text
-    if (isFilled) {
-      ctx.fillStyle = isReadOnly
-        ? NUMBER_SELECTED_READONLY_COLOR
-        : NUMBER_SELECTED_COLOR;
-    } else {
-      ctx.fillStyle = isReadOnly ? NUMBER_READONLY_COLOR : NUMBER_COLOR;
-    }
+    ctx.fillStyle = isFilled
+      ? theme.numberSelected
+      : theme[`number${this.value}`];
 
     if (this.value) {
-      ctx.font = this.fontV;
-      ctx.fillText(this.value, x0 + w * 0.5, y0 + w * 0.57);
+      ctx.font = setBold(this.fontV, isReadOnly);
+      ctx.fillText(this.value, x0 + w * 0.5, y0 + w * 0.53);
     } else {
-      ctx.font = this.fontH;
+      ctx.font = setBold(this.fontH, isReadOnly);
       for (let hint of this.hints) {
         const y = Math.floor((hint - 1) / 3);
         const x = (hint - 1) % 3;
+        ctx.fillStyle = isFilled
+          ? theme.numberSelected
+          : theme[`number${hint}`];
         ctx.fillText(
           hint,
           x0 + w * (0.25 + x * 0.25),

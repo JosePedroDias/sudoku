@@ -1,0 +1,63 @@
+@font-face {
+  font-family: 'sudoku-icons';
+  src: url('sudoku-icons.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^='icon-'],
+[class*=' icon-'] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'sudoku-icons' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-pencil:before {
+  content: '\e906';
+}
+.icon-pen:before {
+  content: '\e908';
+}
+.icon-paint:before {
+  content: '\e90c';
+}
+.icon-generate:before {
+  content: '\e915';
+}
+.icon-stopwatch:before {
+  content: '\e952';
+}
+.icon-save:before {
+  content: '\e960';
+}
+.icon-load:before {
+  content: '\e961';
+}
+.icon-undo:before {
+  content: '\e965';
+}
+.icon-magic:before {
+  content: '\e997';
+}
+.icon-trash:before {
+  content: '\e9ad';
+}
+.icon-play:before {
+  content: '\ea1c';
+}
+.icon-pause:before {
+  content: '\ea1d';
+}
+.icon-check:before {
+  content: '\ea52';
+}

@@ -3,16 +3,21 @@ body {
   border: 0;
   overflow: hidden;
   font-family: sans-serif;
+  /*font-family: quicksand;*/
+}
+
+body {
+  background-color: #fff;
 }
 
 .elapsed-time {
   position: fixed;
-  left: 40%;
+  right: 0;
   top: 0;
   width: 6em;
   margin-left: -3em;
   z-index: 1;
-  text-align: center;
+  text-align: right;
   color: #333;
   font-size: 40px;
   -moz-user-select: none;
@@ -103,8 +108,8 @@ body.paused div.paused {
 
 .action {
   position: relative;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  font-weight: bold;
+  /*font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;*/
+  /*font-weight: bold;*/
   display: block;
   text-align: center;
   width: 4em;
@@ -152,16 +157,16 @@ body.paused div.paused {
 }
 
 .action-0:before {
-  content: "set values";
+  content: 'set values';
 }
 
 .action-0.alt:before {
-  content: "set hints";
+  content: 'set hints';
 }
 
 .action-0:after {
   position: absolute;
-  content: "space bar";
+  content: 'space bar';
   font-size: 16px;
   padding-top: 20px;
   left: 0;
@@ -169,4 +174,12 @@ body.paused div.paused {
   width: 100%;
   height: 100%;
   opacity: 0.66;
+}
+
+body.dark {
+  background-color: #000;
+}
+
+body.dark .elapsed-time {
+  color: #ccc;
 }

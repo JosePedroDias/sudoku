@@ -4,6 +4,13 @@ import { Board } from './board.mjs';
 import { generateNumbers } from './numbers.mjs';
 import { generateActions } from './actions.mjs';
 
+const inDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+console.log('inDarkMode', inDarkMode);
+
+if (inDarkMode) {
+  //document.body.classList.add('dark');
+}
+
 function scaleUI() {
   const scale = Math.min(...[window.innerWidth, window.innerHeight]) / 1000;
   [
