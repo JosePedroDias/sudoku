@@ -108,8 +108,6 @@ body.paused div.paused {
 
 .action {
   position: relative;
-  /*font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;*/
-  /*font-weight: bold;*/
   display: block;
   text-align: center;
   width: 4em;
@@ -121,6 +119,7 @@ body.paused div.paused {
   -moz-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+  background-color: #ddd;
 }
 
 .action.alt {
@@ -136,24 +135,6 @@ body.paused div.paused {
 .action.nok {
   color: #fff;
   background-color: #a66;
-}
-
-.action-0,
-.action-1,
-.action-2 {
-  background-color: #ddd;
-}
-
-.action-3,
-.action-4,
-.action-5,
-.action-6 {
-  background-color: #bbb;
-}
-
-.action-7,
-.action-8 {
-  background-color: #888;
 }
 
 .action-0:before {
@@ -176,10 +157,22 @@ body.paused div.paused {
   opacity: 0.66;
 }
 
+.action,
+.number {
+  color: #333;
+}
+
 body.dark {
   background-color: #000;
 }
 
-body.dark .elapsed-time {
+body.dark .elapsed-time,
+body.dark .action,
+body.dark .number {
   color: #ccc;
+}
+
+body.dark .action,
+body.dark .number {
+  background-color: #222;
 }

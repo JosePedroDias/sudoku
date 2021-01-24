@@ -1,5 +1,5 @@
 import { repeated, withoutRepeats, repeat } from './utils.mjs';
-import { theme } from './theme.mjs';
+import { themes } from './theme.mjs';
 
 const PI2 = 2 * Math.PI;
 
@@ -98,9 +98,16 @@ export function checkSequence(cells, kind, logFn) {
 }
 
 export class Board {
-  constructor({ parentEl, boardWidth, getCellData, onClickCell } = {}) {
+  constructor({
+    parentEl,
+    boardWidth,
+    inDarkMode,
+    getCellData,
+    onClickCell,
+  } = {}) {
     this.boardWidth = boardWidth;
     this.cellWidth = boardWidth && Math.floor(boardWidth / 9);
+    this.theme = inDarkMode ? themes.dark : themes.light;
 
     this.cells = new Map();
     for (let pos of getAllPositions()) {
@@ -145,6 +152,7 @@ export class Board {
   draw() {
     const c = this.ctx;
     const cw = this.cellWidth;
+    const theme = this.theme;
 
     c.fillStyle = theme.bgBoard;
     c.fillRect(0, 0, this.boardWidth, this.boardWidth);
@@ -181,7 +189,7 @@ export class Board {
 
     for (let cell of this.cells.values()) {
       const isSelectedPos = posEqual(cell.position, this.selectedPosition);
-      cell.draw(c, this.selectedNumber, isSelectedPos);
+      cell.draw(c, this.selectedNumber, isSelectedPos, this.theme);
     }
   }
 
@@ -471,7 +479,7 @@ class Cell {
     }
   }
 
-  draw(ctx, selectedNumber, hasSelectedPos) {
+  draw(ctx, selectedNumber, hasSelectedPos, theme) {
     const w = this.width;
     const x0 = w * (this.position[0] - 1);
     const y0 = w * (this.position[1] - 1);

@@ -3,12 +3,19 @@ import { ElapsedTime } from './elapsed-time.mjs';
 import { Board } from './board.mjs';
 import { generateNumbers } from './numbers.mjs';
 import { generateActions } from './actions.mjs';
+import { loadFont } from './utils.mjs';
+
+let b;
+
+loadFont('quicksand', 'fonts/quicksand-regular.woff').then(() => {
+  b.draw();
+});
 
 const inDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 console.log('inDarkMode', inDarkMode);
 
 if (inDarkMode) {
-  //document.body.classList.add('dark');
+  document.body.classList.add('dark');
 }
 
 function scaleUI() {
@@ -28,8 +35,7 @@ const et = new ElapsedTime(document.querySelector('.elapsed-time'));
 const numbers = generateNumbers(document.querySelector('.numbers'), onNumber);
 const actions = generateActions(document.querySelector('.actions'), onAction);
 
-let b,
-  lastPos = [5, 5],
+let lastPos = [5, 5],
   history = [],
   inHintMode = false,
   isPaused = false;
@@ -62,6 +68,7 @@ const getCellData =
 b = new Board({
   parentEl: document.querySelector('.board'),
   boardWidth: 700,
+  inDarkMode,
   onClickCell,
   getCellData,
 });
