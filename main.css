@@ -3,7 +3,6 @@ body {
   border: 0;
   overflow: hidden;
   font-family: sans-serif;
-  /*font-family: quicksand;*/
 }
 
 body {
@@ -12,13 +11,12 @@ body {
 
 .elapsed-time {
   position: fixed;
+  transform-origin: 100% 0%;
   right: 0;
   top: 0;
-  width: 6em;
+  width: 4em;
   margin-left: -3em;
-  z-index: 1;
   text-align: right;
-  color: #333;
   font-size: 40px;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -29,7 +27,7 @@ body {
 .board {
   position: fixed;
   transform-origin: 50% 50%;
-  left: 40%;
+  left: 45%;
   top: 38%;
   margin-left: -350px;
   margin-top: -350px;
@@ -44,7 +42,7 @@ div.paused {
   height: 5em;
   line-height: 5em;
   font-size: 30px;
-  left: 40%;
+  left: 45%;
   top: 38%;
   margin-left: -5em;
   margin-top: -2.5em;
@@ -63,7 +61,7 @@ body.paused div.paused {
   position: fixed;
   transform-origin: 50% 100%;
   bottom: 0;
-  left: 40%;
+  left: 45%;
   width: 270px;
   margin-left: -135px;
 }
@@ -102,24 +100,30 @@ body.paused div.paused {
   transform-origin: 100% 50%;
   top: 50%;
   right: 0;
-  height: 812px;
-  margin-top: -406px;
+  height: 552px;
+  margin-top: -276px;
 }
 
 .action {
   position: relative;
   display: block;
   text-align: center;
-  width: 4em;
+  width: 5em;
   height: 3em;
   line-height: 3em;
-  font-size: 28px;
+  font-size: 19px;
   margin: 0.2em;
   border-radius: 15px;
   -moz-user-select: none;
   -webkit-user-select: none;
   user-select: none;
   background-color: #ddd;
+}
+
+.action span {
+  display: inline-block;
+  margin-left: 0.2em;
+  font-size: 23px;
 }
 
 .action.alt {
@@ -137,28 +141,10 @@ body.paused div.paused {
   background-color: #a66;
 }
 
-.action-0:before {
-  content: 'set values';
-}
-
-.action-0.alt:before {
-  content: 'set hints';
-}
-
-.action-0:after {
-  position: absolute;
-  content: 'space bar';
-  font-size: 16px;
-  padding-top: 20px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.66;
-}
-
+.elapsed-time,
 .action,
-.number {
+.number,
+.paused {
   color: #333;
 }
 
@@ -168,7 +154,8 @@ body.dark {
 
 body.dark .elapsed-time,
 body.dark .action,
-body.dark .number {
+body.dark .number,
+body.dark .paused {
   color: #ccc;
 }
 

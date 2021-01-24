@@ -12,7 +12,7 @@ loadFont('quicksand', 'fonts/quicksand-regular.woff').then(() => {
 });
 
 const inDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-console.log('inDarkMode', inDarkMode);
+// console.log('inDarkMode', inDarkMode);
 
 if (inDarkMode) {
   document.body.classList.add('dark');
@@ -188,7 +188,7 @@ function actionUndo() {
 }
 
 function actionToggleMode() {
-  actions.get('value/hint').toggle();
+  actions.get('mode').toggle();
   inHintMode = !inHintMode;
 }
 
@@ -218,7 +218,7 @@ function actionNew() {
 }
 
 function onAction(action) {
-  if (action === 'value/hint') {
+  if (action === 'mode') {
     actionToggleMode();
   } else if (action === 'Pause') {
     actionTogglePause();
