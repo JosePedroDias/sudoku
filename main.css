@@ -7,7 +7,6 @@ body {
 
 body {
   background-color: #fff;
-  text-size-adjust: none;
 }
 
 .elapsed-time {
@@ -63,18 +62,17 @@ body.paused div.paused {
   transform-origin: 50% 100%;
   bottom: 0;
   left: 45%;
-  width: 270px;
-  margin-left: -135px;
+  width: 255px;
+  margin-left: -127px;
 }
 
 .number {
   display: inline-block;
   text-align: center;
-  width: 5em;
-  /*height: 4.2em;*/
+  width: 80px;
+  height: 80px;
   background-color: #ddd;
-  margin: 0.3em;
-  padding-top: 0.7em;
+  margin: 2.5px;
   border-radius: 15px;
   -moz-user-select: none;
   -webkit-user-select: none;
