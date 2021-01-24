@@ -23,22 +23,8 @@ The UX is somewhat inspired in [Sudoku, the Clean One](https://play.google.com/s
   - [quicksand](https://www.fontsquirrel.com/fonts/quicksand)
   - [convertio](https://convertio.co/otf-woff/)
 
-  values/hints pen/pencil
-  undo undo-alt
-  new trash
-  pause pause/play
-  begin stopwatch
-  load load
-  save save
-  hints magic
-  check check
-
-  theme paint
-  generate generate
-
 ## Vocabulary in source code
 
-- tile ~ box
 - hint ~ candidate
 
 ## Local HTTPS Dev
@@ -62,9 +48,6 @@ The UX is somewhat inspired in [Sudoku, the Clean One](https://play.google.com/s
 ## TODO (eventually)
 
 - playing game
-  - custom font for numbers? (round, easy to read)
-  - icons for actions
-  - dark theme
   - ask for suggestion as a toast
 - solving
   - [ ] implement solving algorithms
