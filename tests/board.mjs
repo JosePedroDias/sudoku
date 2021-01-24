@@ -225,7 +225,7 @@ tap.test('check', (t) => {
         [2, 2],
       ],
     },
-    ['repeated number in tile #1: cells 1,1 and 2,2']
+    ['repeated number in box #1: cells 1,1 and 2,2']
   );
 
   t.end();

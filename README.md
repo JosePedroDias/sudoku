@@ -5,17 +5,22 @@
 A sudoku browser game in recent JS, drawn in canvas. Hopefully mobile friendly.  
 The UX is somewhat inspired in [Sudoku, the Clean One](https://play.google.com/store/apps/details?id=ee.dustland.android.dustlandsudoku).
 
-## References 
+## References
 
 - canvas
-    - [canvas cheat sheet](https://simon.html5.org/dump/html5-canvas-cheat-sheet.html)
+  - [canvas cheat sheet](https://simon.html5.org/dump/html5-canvas-cheat-sheet.html)
 - sudoku
-    - [sudopedia](http://sudopedia.enjoysudoku.com/)
-    - [sudoju wiki](https://www.sudokuwiki.org/sudoku.htm)
+  - [sudopedia](http://sudopedia.enjoysudoku.com/)
+  - [sudoju wiki](https://www.sudokuwiki.org/sudoku.htm)
 - tap
-    - [CLI](https://node-tap.org/docs/cli/)
-    - [writing well structured tests](https://node-tap.org/docs/structure/)
-    - [API/asserts](https://node-tap.org/docs/api/asserts/)
+  - [CLI](https://node-tap.org/docs/cli/)
+  - [writing well structured tests](https://node-tap.org/docs/structure/)
+  - [API/asserts](https://node-tap.org/docs/api/asserts/)
+
+## Vocabulary in source code
+
+- tile ~ box
+- hint ~ candidate
 
 ## Local HTTPS Dev
 
@@ -28,6 +33,7 @@ The UX is somewhat inspired in [Sudoku, the Clean One](https://play.google.com/s
     visit: https://localhost/
 
 ## Remote HTTPS Dev
+
     npm i -g --only=prod localtunnel
     npm i -g --only=prod http-server
 
@@ -36,13 +42,14 @@ The UX is somewhat inspired in [Sudoku, the Clean One](https://play.google.com/s
 
 ## TODO (eventually)
 
-- custom font for numbers? (round, easy to read)
-- icons for actions
-- dark theme
-
+- playing game
+  - custom font for numbers? (round, easy to read)
+  - icons for actions
+  - dark theme
+  - ask for suggestion as a toast
 - solving
-    - implement solving algorithms
-    - classify difficulty based on histogram and number/frequency of moves to solve
-    
+  - [ ] implement solving algorithms
+  - [ ] classify difficulty based on histogram and number/frequency of moves to solve
 - generating boards
-    ...
+  - [x] generate full sudoku
+  - [ ] apply template checking unique solution

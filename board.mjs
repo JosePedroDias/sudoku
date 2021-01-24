@@ -15,7 +15,7 @@ const NUMBER_READONLY_COLOR = '#633';
 const NUMBER_SELECTED_COLOR = '#FFF';
 const NUMBER_SELECTED_READONLY_COLOR = '#DBB';
 
-const VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+export const VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const ASCII1 = '.-----.-----.-----.';
 const ASCII2 = ':----- ----- -----:';
@@ -55,7 +55,7 @@ export function getColPositions(n) {
   return res;
 }
 
-const tileStarts = {
+const boxStarts = {
   1: [1, 1],
   2: [4, 1],
   3: [7, 1],
@@ -67,8 +67,8 @@ const tileStarts = {
   9: [7, 7],
 };
 
-export function getTilePositions(n) {
-  const [tx, ty] = tileStarts[n];
+export function getBoxPositions(n) {
+  const [tx, ty] = boxStarts[n];
   const res = [];
   for (let j = 0; j < 3; ++j) {
     for (let i = 0; i < 3; ++i) {
@@ -78,7 +78,7 @@ export function getTilePositions(n) {
   return res;
 }
 
-export function getTileNr(pos) {
+export function getBoxNr(pos) {
   const [x, y] = pos;
   const xc = x < 4 ? 1 : x < 7 ? 2 : 3;
   const yc = y < 4 ? 1 : y < 7 ? 2 : 3;
@@ -94,9 +94,10 @@ export function checkSequence(cells, kind, logFn) {
     const c2 = filledCells[repeatedIndices[1]];
     c1.setInvalid();
     c2.setInvalid();
-    logFn(
-      `repeated number in ${kind}: cells ${c1.position} and ${c2.position}`
-    );
+    logFn &&
+      logFn(
+        `repeated number in ${kind}: cells ${c1.position} and ${c2.position}`
+      );
   }
   return !repeatedIndices;
 }
@@ -212,8 +213,8 @@ export class Board {
     return getColPositions(n).map((pos) => this.getCell(pos));
   }
 
-  getTileCells(n) {
-    return getTilePositions(n).map((pos) => this.getCell(pos));
+  getBoxCells(n) {
+    return getBoxPositions(n).map((pos) => this.getCell(pos));
   }
 
   getCellsWithValues() {
@@ -227,11 +228,11 @@ export class Board {
   getRelatedCells(pos) {
     const ownCell = this.getCell(pos);
     const [x, y] = pos;
-    const tn = getTileNr(pos);
+    const tn = getBoxNr(pos);
     const cells = [
       ...this.getRowCells(y),
       ...this.getColCells(x),
-      ...this.getTileCells(tn),
+      ...this.getBoxCells(tn),
     ];
     return withoutRepeats(cells, [ownCell]);
   }
@@ -273,7 +274,7 @@ export class Board {
     for (let n = 1; n <= 9; ++n) {
       ok = ok && checkSequence(this.getRowCells(n), `row #${n}`, logFn);
       ok = ok && checkSequence(this.getColCells(n), `col #${n}`, logFn);
-      ok = ok && checkSequence(this.getTileCells(n), `tile #${n}`, logFn);
+      ok = ok && checkSequence(this.getBoxCells(n), `box #${n}`, logFn);
     }
 
     return ok;
@@ -292,8 +293,10 @@ export class Board {
   }
 
   checkDone() {
-    const hist = this.getValueHistogram();
-    return Math.min(...Object.values(hist)) === 9 && this.check;
+    //if (!this.check()) {
+    //  return false;
+    //}
+    return this.getCellsWithoutValues().length === 0;
   }
 
   getState() {
