@@ -107,6 +107,7 @@ export class Board {
   } = {}) {
     this.boardWidth = boardWidth;
     this.cellWidth = boardWidth && Math.floor(boardWidth / 9);
+    this.inDarkMode = inDarkMode;
     this.theme = inDarkMode ? themes.dark : themes.light;
 
     this.cells = new Map();
@@ -147,6 +148,11 @@ export class Board {
           onClickCell(pos);
         });
     }
+  }
+
+  toggleTheme() {
+    this.inDarkMode = !this.inDarkMode;
+    this.theme = this.inDarkMode ? themes.dark : themes.light;
   }
 
   draw() {

@@ -12,7 +12,6 @@ loadFont('quicksand', 'fonts/quicksand-regular.woff').then(() => {
 });
 
 const inDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-// console.log('inDarkMode', inDarkMode);
 
 if (inDarkMode) {
   document.body.classList.add('dark');
@@ -137,7 +136,6 @@ function actionCheck() {
   const isValid = b.check((msg) => console.log(msg));
   b.draw();
   const act = actions.get('Check');
-  act.setLabel('Check *');
   const cls = isValid ? 'ok' : 'nok';
   act.toggle(cls);
 
@@ -151,8 +149,13 @@ function actionCheck() {
 }
 
 function actionHints() {
-  actions.get('Hints').setLabel('Hints *');
   b.fillHints();
+  b.draw();
+}
+
+function actionToggleTheme() {
+  document.body.classList.toggle('dark');
+  b.toggleTheme();
   b.draw();
 }
 
@@ -208,6 +211,9 @@ function actionBegin() {
   b.draw();
   et.reset(0);
   et.start();
+  if (!isPaused) {
+    actions.get('Pause').toggle();
+  }
 }
 
 function actionNew() {
@@ -228,6 +234,8 @@ function onAction(action) {
     actionNew();
   } else if (action === 'Begin') {
     actionBegin();
+  } else if (action === 'Theme') {
+    actionToggleTheme();
   } else if (action === 'Load') {
     actionLoad();
   } else if (action === 'Save') {

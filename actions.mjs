@@ -4,6 +4,7 @@ const iconClasses = [
   'undo',
   'trash',
   'stopwatch',
+  'paint',
   'load',
   'save',
   'magic',
@@ -33,11 +34,10 @@ export class SAction {
     if (this.idx === 0) {
       this.iconEl.classList.toggle('icon-pen');
       this.iconEl.classList.toggle('icon-pencil');
+    } else if (this.idx === 1) {
+      this.iconEl.classList.toggle('icon-pause');
+      this.iconEl.classList.toggle('icon-play');
     }
-  }
-
-  setLabel(text) {
-    //this.el.innerHTML = text;
   }
 }
 
@@ -50,6 +50,7 @@ export function generateActions(containerEl, onAction) {
     'Undo',
     'New',
     'Begin',
+    'Theme',
     'Load',
     'Save',
     'Hints',
@@ -59,8 +60,6 @@ export function generateActions(containerEl, onAction) {
   actionNames.forEach((actionName, idx) => {
     actions.set(actionName, new SAction(containerEl, actionName, idx));
   });
-
-  //actions.get('value/hint').setLabel('');
 
   containerEl.addEventListener('click', (ev) => {
     let el = ev.target;

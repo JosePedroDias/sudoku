@@ -126,21 +126,6 @@ body.paused div.paused {
   font-size: 23px;
 }
 
-.action.alt {
-  color: #fff;
-  background-color: #66a;
-}
-
-.action.ok {
-  color: #fff;
-  background-color: #6a6;
-}
-
-.action.nok {
-  color: #fff;
-  background-color: #a66;
-}
-
 .elapsed-time,
 .action,
 .number,
