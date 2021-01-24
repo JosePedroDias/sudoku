@@ -293,9 +293,9 @@ export class Board {
   }
 
   checkDone() {
-    //if (!this.check()) {
-    //  return false;
-    //}
+    if (!this.check()) {
+      return false;
+    }
     return this.getCellsWithoutValues().length === 0;
   }
 

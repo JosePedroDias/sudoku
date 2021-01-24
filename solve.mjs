@@ -1,5 +1,5 @@
+import { sort, shuffleArray, isMainModule } from './utils.mjs';
 import { Board } from './board.mjs';
-import { sort, shuffleArray } from './utils.mjs';
 
 function numHintsFn(c) {
   return c.hints.length;
@@ -21,6 +21,10 @@ function candidatesToFill(b) {
     }, []);
   }
   return unfilledCells;
+}
+
+function isFilled(b) {
+  return b.getCellsWithoutValues().length === 0;
 }
 
 function hasUnsetCellWithoutHints(b) {
@@ -84,7 +88,7 @@ export function* solve(state81) {
   b.fillHints();
 
   while (true) {
-    if (b.checkDone()) {
+    if (isFilled(b)) {
       return { board: b, moves };
     }
 
@@ -97,7 +101,7 @@ export function* solve(state81) {
   }
 }
 
-function solveAtOnce(
+export function solveAtOnce(
   startState = '000000000000000000000000000000000000000000000000000000000000000000000000000000000'
 ) {
   const solver = solve(startState);
@@ -123,6 +127,6 @@ function go() {
   console.log(s);
 }
 
-//if (require.main === module) {
-go();
-//}
+if (isMainModule(import.meta)) {
+  go();
+}

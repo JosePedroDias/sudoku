@@ -134,3 +134,10 @@ export function record(...args) {
   record.calls.push(args);
 }
 record.calls = [];
+
+// kinda lame approach but works for differently named files in lack of better idea O:)
+export function isMainModule(importMeta) {
+  const a = importMeta.url.split('/').pop();
+  const b = process.argv[process.argv.length - 1].split('/').pop();
+  return a === b;
+}
