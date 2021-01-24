@@ -3,13 +3,14 @@ import { ElapsedTime } from './elapsed-time.mjs';
 import { Board } from './board.mjs';
 import { generateNumbers } from './numbers.mjs';
 import { generateActions } from './actions.mjs';
-import { loadFont } from './utils.mjs';
+import { loadFont, rndArray } from './utils.mjs';
 
 let b;
 
-loadFont('quicksand', 'fonts/quicksand-regular.woff').then(() => {
-  b.draw();
-});
+Promise.all([
+  loadFont('quicksand', 'fonts/quicksand-regular.woff'),
+  loadFont('quicksand', 'fonts/quicksand-bold.woff'),
+]).then(() => b.draw());
 
 const inDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -79,6 +80,19 @@ if (!boardFromHash) {
 history.push(b.getState());
 
 function onNumber(value) {
+  if (b.getSelectedNumber() !== value) {
+    console.log(`just selecting other number: ${value}`);
+    selectNumber(value);
+    const valuesWith = b.getCellsWithValues().filter((c) => c.value === value);
+    if (valuesWith.length > 0) {
+      const c = rndArray(valuesWith);
+      lastPos = [...c.position];
+      b.setSelectedPosition(lastPos);
+    }
+    b.draw();
+    return;
+  }
+
   const c = b.getCell(lastPos);
   if (c.readOnly) {
     return;
@@ -122,9 +136,12 @@ function onNumber(value) {
 }
 
 function updateCounters() {
+  const selNum = b.getSelectedNumber();
   const hist = b.getValueHistogram();
   for (let n = 1; n <= 9; ++n) {
-    numbers.get(n).setCount(9 - (hist[n] || 0));
+    const number = numbers.get(n);
+    number.setCount(9 - (hist[n] || 0));
+    number.el.classList[n === selNum ? 'add' : 'remove']('selected');
   }
 }
 
@@ -190,6 +207,7 @@ function actionUndo() {
 
   updateCounters();
   updateHash();
+  b.unselectNumber();
   b.draw();
 }
 
@@ -255,7 +273,12 @@ window.addEventListener('beforeunload', () => {
 });
 
 document.body.addEventListener('keydown', (ev) => {
-  // console.log({ code:ev.code, ctrl: ev.ctrlKey, alt: ev.altKey, shift: ev.shiftKey });
+  /*console.log({
+    code: ev.code,
+    ctrl: ev.ctrlKey,
+    alt: ev.altKey,
+    shift: ev.shiftKey,
+  });*/
   switch (ev.code) {
     case 'ArrowLeft':
       if (lastPos[0] > 1) {
@@ -276,6 +299,9 @@ document.body.addEventListener('keydown', (ev) => {
       if (lastPos[1] < 9) {
         ++lastPos[1];
       }
+      break;
+    case 'Backspace':
+      unselectNumber();
       break;
     case 'Space':
       actionToggleMode();
@@ -325,6 +351,26 @@ document.body.addEventListener('keydown', (ev) => {
   ev.stopPropagation();
   ev.preventDefault();
   b.draw();
+});
+
+function selectNumber(value) {
+  b.setSelectedNumber(value);
+  updateCounters();
+}
+
+function unselectNumber() {
+  if (!b.hasSelectedNumber()) {
+    return;
+  }
+  b.setSelectedNumber(-1);
+  b.draw();
+  updateCounters();
+}
+
+document.addEventListener('click', (ev) => {
+  ev.preventDefault();
+  ev.stopPropagation();
+  unselectNumber();
 });
 
 scaleUI();

@@ -4,6 +4,7 @@ import {
   rndInt,
   rndFloat,
   rndColor,
+  rndArray,
   sort,
   zeroPad,
   getIndices,
@@ -42,6 +43,18 @@ tap.test('rndColor', (t) => {
   tap.equal(rndColor(), `rgb(252,89,144)`);
   tap.equal(rndColor(), `rgb(255,212,33)`);
   tap.equal(rndColor(), `rgb(211,214,28)`);
+  unsetSeed();
+
+  t.end();
+});
+
+tap.test('rndArray', (t) => {
+  const arr = ['a', 'b', 'c', 'd', 'e'];
+  setSeed();
+  tap.equal(rndArray(arr), 'e');
+  tap.equal(rndArray(arr), 'b');
+  tap.equal(rndArray(arr), 'c');
+  tap.equal(rndArray([]), undefined);
   unsetSeed();
 
   t.end();

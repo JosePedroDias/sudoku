@@ -146,3 +146,7 @@ body.dark .action,
 body.dark .number {
   background-color: #222;
 }
+
+.number.selected {
+  background-color: red;
+}

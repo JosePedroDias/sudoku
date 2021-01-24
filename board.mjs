@@ -20,6 +20,14 @@ export function hashPos(pos) {
   return pos.join(',');
 }
 
+export function hasValidValue(value) {
+  return value >= 1 && value <= 9;
+}
+
+export function hasValidPos(pos) {
+  return hasValidValue(pos[0]) && hasValidValue(pos[1]);
+}
+
 export function posEqual(p, P) {
   return p[0] === P[0] && p[1] === P[1];
 }
@@ -199,12 +207,24 @@ export class Board {
     }
   }
 
+  hasSelectedPosition() {
+    return hasValidPos(this.selectedPosition);
+  }
+
   setSelectedPosition(pos) {
     this.selectedPosition = pos;
   }
 
+  getSelectedNumber() {
+    return this.hasSelectedNumber() && this.selectedNumber;
+  }
+
   setSelectedNumber(num) {
     this.selectedNumber = num;
+  }
+
+  hasSelectedNumber() {
+    return hasValidValue(this.selectedNumber);
   }
 
   getCell(pos) {
@@ -392,7 +412,7 @@ export class Board {
       for (let x = 1; x <= 9; ++x) {
         const value = parseInt(str[i++], 10);
         const c = this.getCell([x, y]);
-        c.value = value >= 1 && value <= 9 ? value : undefined;
+        c.value = hasValidValue(value) ? value : undefined;
         c.hints = [];
       }
     }
@@ -528,7 +548,7 @@ class Cell {
       ctx.font = setBold(this.fontV, isReadOnly);
       ctx.fillText(this.value, x0 + w * 0.5, y0 + w * 0.53);
     } else {
-      ctx.font = setBold(this.fontH, isReadOnly);
+      ctx.font = setBold(this.fontH, true);
       for (let hint of this.hints) {
         const y = Math.floor((hint - 1) / 3);
         const x = (hint - 1) % 3;

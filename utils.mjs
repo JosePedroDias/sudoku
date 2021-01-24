@@ -33,6 +33,10 @@ export function rndColor() {
   return `rgb(${rndInt(256)},${rndInt(256)},${rndInt(256)})`;
 }
 
+export function rndArray(arr) {
+  return arr[rndInt(arr.length)];
+}
+
 export function sort(arr, intHeuristicFn, addEntropy = false) {
   const arr2 = [...arr];
   if (addEntropy) {
