@@ -160,17 +160,20 @@ function actionToggleTheme() {
 }
 
 function actionLoad() {
-  const dt = storage.getItem('time');
-  if (dt > et.dt) {
-    et.reset(dt);
-  }
-  const st = storage.getItem('state');
-  history = [st];
-  b.setState(st);
+  try {
+    const dt = storage.getItem('time') | 0;
+    if (dt > et.dt) {
+      et.reset(dt);
+    }
+    const st = storage.getItem('state');
 
-  updateCounters();
-  updateHash();
-  b.draw();
+    b.setState(st);
+    history = [st];
+
+    updateCounters();
+    updateHash();
+    b.draw();
+  } catch {}
 }
 
 function actionSave() {

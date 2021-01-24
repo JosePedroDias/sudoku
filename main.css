@@ -7,6 +7,7 @@ body {
 
 body {
   background-color: #fff;
+  text-size-adjust: none;
 }
 
 .elapsed-time {
@@ -70,11 +71,10 @@ body.paused div.paused {
   display: inline-block;
   text-align: center;
   width: 5em;
-  height: 4.2em;
+  /*height: 4.2em;*/
   background-color: #ddd;
   margin: 0.3em;
-  padding-top: 0.75em;
-  padding-bottom: -0.75em;
+  padding-top: 0.7em;
   border-radius: 15px;
   -moz-user-select: none;
   -webkit-user-select: none;
