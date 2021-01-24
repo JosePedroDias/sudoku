@@ -137,6 +137,9 @@ record.calls = [];
 
 // kinda lame approach but works for differently named files in lack of better idea O:)
 export function isMainModule(importMeta) {
+  if (importMeta.url.indexOf('http' === 0)) {
+    return false;
+  }
   const a = importMeta.url.split('/').pop();
   const b = process.argv[process.argv.length - 1].split('/').pop();
   return a === b;

@@ -133,16 +133,17 @@ export class Board {
 
       this.draw();
 
-      this.canvas.addEventListener('click', (ev) => {
-        ev.preventDefault();
-        ev.stopPropagation();
-        const g = parentEl.getBoundingClientRect();
-        const cw = g.width / 9;
-        const x0 = ev.clientX - g.x;
-        const y0 = ev.clientY - g.y;
-        const pos = [Math.floor(x0 / cw) + 1, Math.floor(y0 / cw) + 1];
-        onClickCell(pos);
-      });
+      onClickCell &&
+        this.canvas.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          const g = parentEl.getBoundingClientRect();
+          const cw = g.width / 9;
+          const x0 = ev.clientX - g.x;
+          const y0 = ev.clientY - g.y;
+          const pos = [Math.floor(x0 / cw) + 1, Math.floor(y0 / cw) + 1];
+          onClickCell(pos);
+        });
     }
   }
 
