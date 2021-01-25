@@ -109,13 +109,15 @@ export class Board {
     parentEl,
     boardWidth,
     inDarkMode,
+    config,
     getCellData,
     onClickCell,
   } = {}) {
     this.boardWidth = boardWidth;
     this.cellWidth = boardWidth && Math.floor(boardWidth / 9);
     this.inDarkMode = inDarkMode;
-    this.theme = inDarkMode ? themes.dark : themes.light;
+    this.config = config || {};
+    this.applyTheme();
 
     this.cells = new Map();
     for (let pos of getAllPositions()) {
@@ -157,9 +159,16 @@ export class Board {
     }
   }
 
-  toggleTheme() {
+  toggleThemeDarkness() {
     this.inDarkMode = !this.inDarkMode;
-    this.theme = this.inDarkMode ? themes.dark : themes.light;
+    this.applyTheme();
+  }
+
+  applyTheme() {
+    const name =
+      (this.inDarkMode ? 'dark' : 'light') +
+      (this.config.coloredNumbers ? '' : 'Mono');
+    this.theme = themes[name];
   }
 
   draw() {
@@ -167,11 +176,12 @@ export class Board {
     const cw = this.cellWidth;
     const theme = this.theme;
 
-    const relatedPositions = this.hasSelectedPosition()
-      ? this.getRelatedCells(this.selectedPosition).map((c) =>
-          c.position.join(',')
-        )
-      : [];
+    const relatedPositions =
+      this.config.showRelated && this.hasSelectedPosition()
+        ? this.getRelatedCells(this.selectedPosition).map((c) =>
+            c.position.join(',')
+          )
+        : [];
 
     for (let [cx, cy] of getAllPositions()) {
       const pos = `${cx},${cy}`;
@@ -205,7 +215,7 @@ export class Board {
 
     for (let cell of this.cells.values()) {
       const isSelectedPos = posEqual(cell.position, this.selectedPosition);
-      cell.draw(c, this.selectedNumber, isSelectedPos, this.theme);
+      cell.draw(c, this.selectedNumber, isSelectedPos, this.theme, this.config);
     }
   }
 
@@ -509,7 +519,7 @@ class Cell {
     }
   }
 
-  draw(ctx, selectedNumber, hasSelectedPos, theme) {
+  draw(ctx, selectedNumber, hasSelectedPos, theme, config) {
     const w = this.width;
     const x0 = w * (this.position[0] - 1);
     const y0 = w * (this.position[1] - 1);
@@ -523,7 +533,8 @@ class Cell {
       }
     }
 
-    const isFilled = this.isInvalid || hasSelectedNumber;
+    const isFilled =
+      this.isInvalid || (config.highlightNumber && hasSelectedNumber);
     const isSelected = hasSelectedPos;
     const isReadOnly = !!this.readOnly;
 

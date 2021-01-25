@@ -40,7 +40,27 @@ const dark = {
   numberSelected: '#000',
 };
 
+function cloneTheme(theme, numberColor) {
+  return {
+    ...theme,
+    number1: numberColor,
+    number2: numberColor,
+    number3: numberColor,
+    number4: numberColor,
+    number5: numberColor,
+    number6: numberColor,
+    number7: numberColor,
+    number8: numberColor,
+    number9: numberColor,
+  };
+}
+
+const lightMono = cloneTheme(light, 'hsl(36, 0%, 30%)');
+const darkMono = cloneTheme(dark, 'hsl(36, 0%, 70%)');
+
 export const themes = {
   light,
   dark,
+  lightMono,
+  darkMono,
 };

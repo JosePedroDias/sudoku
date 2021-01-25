@@ -4,13 +4,27 @@ import { Board, posEqual } from './board.mjs';
 import { generateNumbers } from './numbers.mjs';
 import { generateActions } from './actions.mjs';
 
+const storage = storageFactory('sdku');
+
 let b;
+
+const defaultConfig = {
+  coloredNumbers: true,
+  showRelated: true,
+  highlightNumber: true,
+  updateCandidates: true,
+};
+
+const config = storage.getItem('config') || { ...defaultConfig };
 
 document.fonts.ready.then(() => {
   b.draw();
 });
 
-const inDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+let inDarkMode = false;
+try {
+  window.matchMedia('(prefers-color-scheme: dark)').matches;
+} catch (_) {}
 
 if (inDarkMode) {
   document.body.classList.add('dark');
@@ -26,8 +40,6 @@ function scaleUI() {
     document.querySelector('.numbers'),
   ].forEach((el) => (el.style.transform = `scale(${scale.toFixed(2)})`));
 }
-
-const storage = storageFactory('sdku');
 
 const et = new ElapsedTime(document.querySelector('.elapsed-time'));
 const numbers = generateNumbers(document.querySelector('.numbers'), onNumber);
@@ -70,6 +82,7 @@ if (boardFromHash) {
 b = new Board({
   parentEl: document.querySelector('.board'),
   boardWidth: 700,
+  config,
   inDarkMode,
   onClickCell,
   getCellData,
@@ -101,7 +114,7 @@ function onNumber(value) {
     const oldValue = c.value;
     c.toggleValue(value);
     const relatedCells = b.getRelatedCells(lastPos);
-    if (oldValue) {
+    if (oldValue && config.updateCandidates) {
       relatedCells.forEach((c2) => {
         // not to set hints on unvisited cells
         if (c2.hints.length === 0) {
@@ -115,7 +128,9 @@ function onNumber(value) {
       });
     }
     if (c.value) {
-      relatedCells.forEach((c2) => c2.unsetHint(value, true));
+      if (config.updateCandidates) {
+        relatedCells.forEach((c2) => c2.unsetHint(value, true));
+      }
       if (b.checkDone()) {
         et.stop();
         b.setSelectedNumber(undefined);
@@ -165,7 +180,7 @@ function actionHints() {
 
 function actionToggleTheme() {
   document.body.classList.toggle('dark');
-  b.toggleTheme();
+  b.toggleThemeDarkness();
   b.draw();
 }
 
