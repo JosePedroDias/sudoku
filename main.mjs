@@ -3,7 +3,6 @@ import { ElapsedTime } from './elapsed-time.mjs';
 import { Board, posEqual } from './board.mjs';
 import { generateNumbers } from './numbers.mjs';
 import { generateActions } from './actions.mjs';
-import { rndArray } from './utils.mjs';
 
 let b;
 
@@ -85,12 +84,6 @@ history.push(b.getState());
 function onNumber(value) {
   if (!inHintMode && b.getSelectedNumber() !== value) {
     selectNumber(value);
-    const valuesWith = b.getCellsWithValues().filter((c) => c.value === value);
-    if (valuesWith.length > 0) {
-      const c = rndArray(valuesWith);
-      lastPos = [...c.position];
-      b.setSelectedPosition(lastPos);
-    }
     b.draw();
     return;
   }
@@ -100,6 +93,9 @@ function onNumber(value) {
     return;
   }
   if (inHintMode) {
+    if (!b.hasSelectedNumber()) {
+      selectNumber(value);
+    }
     c.toggleHint(value);
   } else {
     const oldValue = c.value;

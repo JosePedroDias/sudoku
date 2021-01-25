@@ -261,7 +261,7 @@ export class Board {
     return this.getAllCells().filter((c) => !c.value);
   }
 
-  getRelatedCells(pos) {
+  getRelatedCells(pos, keepOwn = false) {
     const ownCell = this.getCell(pos);
     const [x, y] = pos;
     const tn = getBoxNr(pos);
@@ -270,7 +270,7 @@ export class Board {
       ...this.getColCells(x),
       ...this.getBoxCells(tn),
     ];
-    return withoutRepeats(cells, [ownCell]);
+    return withoutRepeats(cells, keepOwn ? [] : [ownCell]);
   }
 
   getValidValues(pos) {
