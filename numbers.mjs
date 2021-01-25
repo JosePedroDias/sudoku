@@ -47,6 +47,8 @@ export function generateNumbers(containerEl, onNumber) {
         return;
       }
     }
+    ev.stopPropagation();
+    ev.preventDefault();
     const value = parseInt(el.getAttribute('data-value'), 10);
     onNumber(value);
   });

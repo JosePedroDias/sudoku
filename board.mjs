@@ -6,15 +6,15 @@ const PI2 = 2 * Math.PI;
 //const FONT = 'sans-serif';
 const FONT = 'quicksand';
 
-function setBold(str, on) {
-  return `${on ? 'bold ' : ''}${str}`;
-}
-
 export const VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const ASCII1 = '.-----.-----.-----.';
 const ASCII2 = ':----- ----- -----:';
 const ASCII3 = "'-----'-----'-----'";
+
+function setBold(str, on) {
+  return `${on ? 'bold ' : ''}${str}`;
+}
 
 export function hashPos(pos) {
   return pos.join(',');
@@ -168,17 +168,20 @@ export class Board {
     const cw = this.cellWidth;
     const theme = this.theme;
 
-    c.fillStyle = theme.bgBoard;
-    c.fillRect(0, 0, this.boardWidth, this.boardWidth);
-
-    c.fillStyle = theme.bgBoard2;
+    const relatedPositions = this.hasSelectedPosition()
+      ? this.getRelatedCells(this.selectedPosition).map((c) =>
+          c.position.join(',')
+        )
+      : [];
 
     for (let [cx, cy] of getAllPositions()) {
+      const pos = `${cx},${cy}`;
       --cx;
       --cy;
-      if ((cx + cy) % 2 === 1) {
-        continue;
-      }
+      const isAltCell = (cx + cy) % 2 === 1;
+      const isRelated = relatedPositions.indexOf(pos) !== -1;
+      c.fillStyle =
+        theme[`bgBoard${isAltCell ? '2' : ''}${isRelated ? 'b' : ''}`];
       c.fillRect(
         cx * this.cellWidth,
         cy * this.cellWidth,

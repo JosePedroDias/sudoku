@@ -69,6 +69,8 @@ export function generateActions(containerEl, onAction) {
         return;
       }
     }
+    ev.stopPropagation();
+    ev.preventDefault();
     const value = el.getAttribute('data-value');
     onAction(value);
   });

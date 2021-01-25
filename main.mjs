@@ -81,7 +81,6 @@ history.push(b.getState());
 
 function onNumber(value) {
   if (b.getSelectedNumber() !== value) {
-    console.log(`just selecting other number: ${value}`);
     selectNumber(value);
     const valuesWith = b.getCellsWithValues().filter((c) => c.value === value);
     if (valuesWith.length > 0) {
