@@ -50,16 +50,22 @@ export function generateSettings(config, allDoneFn) {
     propRow(row, settingsEl, config);
   }
 
-  function updateConfigData() {
-    for (let row of rowData) {
-      config[row.name] = row.getter();
+  function onEnd(updateData) {
+    if (updateData) {
+      for (let row of rowData) {
+        config[row.name] = row.getter();
+      }
     }
-  }
-
-  propButton(settingsEl, 'change', () => {
-    updateConfigData();
     document.body.classList.toggle('settings');
     settingsEl.innerHTML = '';
     allDoneFn(config);
+  }
+
+  propButton(settingsEl, 'cancel', () => {
+    onEnd(false);
+  });
+
+  propButton(settingsEl, 'change', () => {
+    onEnd(true);
   });
 }
