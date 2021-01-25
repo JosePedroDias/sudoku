@@ -41,7 +41,7 @@ export function generateNumbers(containerEl, onNumber) {
 
   containerEl.addEventListener('click', (ev) => {
     let el = ev.target;
-    while (el.className !== 'number') {
+    while (!el.classList.contains('number')) {
       el = el.parentElement;
       if (!el) {
         return;

@@ -134,15 +134,6 @@ export function map2obj(m) {
   return o;
 }
 
-export function loadFont(fontName, url) {
-  const font = new FontFace(fontName, `url(${url})`);
-
-  return font.load().then((font) => {
-    document.fonts.add(font);
-    //console.log(`Font ${fontName} loaded`);
-  });
-}
-
 export function record(...args) {
   record.calls.push(args);
 }

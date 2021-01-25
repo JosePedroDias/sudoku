@@ -12,7 +12,7 @@ const ASCII2 = ':----- ----- -----:';
 const ASCII3 = "'-----'-----'-----'";
 
 function setBold(str, on) {
-  return `${on ? 'bold ' : ''}${str}`;
+  return `${on ? 'bold' : 'normal'} ${str}`;
 }
 
 export function hashPos(pos) {
@@ -209,6 +209,10 @@ export class Board {
     }
   }
 
+  getSelectedPosition() {
+    return this.selectedPosition;
+  }
+
   hasSelectedPosition() {
     return hasValidPos(this.selectedPosition);
   }
@@ -218,7 +222,7 @@ export class Board {
   }
 
   getSelectedNumber() {
-    return this.hasSelectedNumber() && this.selectedNumber;
+    return this.selectedNumber;
   }
 
   setSelectedNumber(num) {

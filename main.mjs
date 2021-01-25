@@ -1,16 +1,15 @@
 import { storageFactory } from './storage.mjs';
 import { ElapsedTime } from './elapsed-time.mjs';
-import { Board } from './board.mjs';
+import { Board, posEqual } from './board.mjs';
 import { generateNumbers } from './numbers.mjs';
 import { generateActions } from './actions.mjs';
-import { loadFont, rndArray } from './utils.mjs';
+import { rndArray } from './utils.mjs';
 
 let b;
 
-Promise.all([
-  loadFont('quicksand', 'fonts/quicksand-regular.woff'),
-  loadFont('quicksand', 'fonts/quicksand-bold.woff'),
-]).then(() => b.draw());
+document.fonts.ready.then(() => {
+  b.draw();
+});
 
 const inDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -41,11 +40,12 @@ let lastPos = [5, 5],
   isPaused = false;
 
 function onClickCell(pos) {
-  const c = b.getCell(pos);
-
-  b.setSelectedPosition(pos);
-  if (c.value) {
-    b.setSelectedNumber(c.value);
+  const samePos = posEqual(b.getSelectedPosition(), pos);
+  if (!samePos) {
+    b.setSelectedPosition(pos);
+  } else if (b.hasSelectedNumber()) {
+    const value = b.getSelectedNumber();
+    onNumber(value);
   }
   b.draw();
 
@@ -55,15 +55,18 @@ function onClickCell(pos) {
 const boardFromHash = location.hash && location.hash.substring(1);
 
 let gcdIdx = 0;
-const getCellData =
-  boardFromHash &&
-  function (pos) {
+let getCellData = undefined;
+
+if (boardFromHash) {
+  getCellData = (pos) => {
     const v = parseInt(boardFromHash[gcdIdx++], 10) || undefined;
     if (pos[0] === 9 && pos[1] === 9) {
       gcdIdx = 0;
     }
     return { value: v, hints: [] };
   };
+  location.hash = '';
+}
 
 b = new Board({
   parentEl: document.querySelector('.board'),
@@ -80,7 +83,7 @@ if (!boardFromHash) {
 history.push(b.getState());
 
 function onNumber(value) {
-  if (b.getSelectedNumber() !== value) {
+  if (!inHintMode && b.getSelectedNumber() !== value) {
     selectNumber(value);
     const valuesWith = b.getCellsWithValues().filter((c) => c.value === value);
     if (valuesWith.length > 0) {
@@ -119,10 +122,8 @@ function onNumber(value) {
       relatedCells.forEach((c2) => c2.unsetHint(value, true));
       if (b.checkDone()) {
         et.stop();
-        b.setSelectedNumber(-1);
+        b.setSelectedNumber(undefined);
         window.alert('done!');
-      } else {
-        b.setSelectedNumber(c.value);
       }
     }
   }
@@ -130,23 +131,19 @@ function onNumber(value) {
   history.push(b.getState());
 
   updateCounters();
-  updateHash();
   b.draw();
 }
 
 function updateCounters() {
   const selNum = b.getSelectedNumber();
+
   const hist = b.getValueHistogram();
   b.unsetInvalidCells();
   for (let n = 1; n <= 9; ++n) {
     const number = numbers.get(n);
-    number.setCount(9 - (hist[n] || 0));
+    number.setCount(Math.max(9 - (hist[n] || 0), 0));
     number.el.classList[n === selNum ? 'add' : 'remove']('selected');
   }
-}
-
-function updateHash() {
-  location.hash = b.getState81();
 }
 
 function actionCheck() {
@@ -188,7 +185,6 @@ function actionLoad() {
     history = [st];
 
     updateCounters();
-    updateHash();
     b.draw();
   } catch {}
 }
@@ -206,8 +202,7 @@ function actionUndo() {
   b.setState(history[history.length - 1]);
 
   updateCounters();
-  updateHash();
-  b.unselectNumber();
+  unselectNumber();
   b.draw();
 }
 
@@ -240,7 +235,6 @@ function actionBegin() {
 function actionNew() {
   b.clear();
   updateCounters();
-  updateHash();
   b.draw();
 }
 
@@ -356,18 +350,22 @@ document.body.addEventListener('keydown', (ev) => {
 function selectNumber(value) {
   b.setSelectedNumber(value);
   updateCounters();
+  b.draw();
 }
 
 function unselectNumber() {
   if (!b.hasSelectedNumber()) {
     return;
   }
-  b.setSelectedNumber(-1);
-  b.draw();
+  b.setSelectedNumber(undefined);
   updateCounters();
+  b.draw();
 }
 
 document.addEventListener('click', (ev) => {
+  if (ev.target !== document.body.parentNode) {
+    return;
+  }
   ev.preventDefault();
   ev.stopPropagation();
   unselectNumber();
