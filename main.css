@@ -57,6 +57,10 @@ body.settings div.settings {
   display: block;
 }
 
+body.dark div.settings {
+  color: white;
+}
+
 body.paused .board,
 body.settings .board {
   display: none;

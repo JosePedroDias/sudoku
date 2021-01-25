@@ -105,17 +105,9 @@ export function checkSequence(cells, kind, logFn) {
 }
 
 export class Board {
-  constructor({
-    parentEl,
-    boardWidth,
-    inDarkMode,
-    config,
-    getCellData,
-    onClickCell,
-  } = {}) {
+  constructor({ parentEl, boardWidth, config, getCellData, onClickCell } = {}) {
     this.boardWidth = boardWidth;
     this.cellWidth = boardWidth && Math.floor(boardWidth / 9);
-    this.inDarkMode = inDarkMode;
     this.config = config || {};
     this.applyTheme();
 
@@ -159,14 +151,9 @@ export class Board {
     }
   }
 
-  toggleThemeDarkness() {
-    this.inDarkMode = !this.inDarkMode;
-    this.applyTheme();
-  }
-
   applyTheme() {
     const name =
-      (this.inDarkMode ? 'dark' : 'light') +
+      (this.config.inDarkMode ? 'dark' : 'light') +
       (this.config.coloredNumbers ? '' : 'Mono');
     this.theme = themes[name];
   }

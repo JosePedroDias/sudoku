@@ -34,6 +34,7 @@ function propRow(row, settingsEl, config) {
 }
 
 const rowData = [
+  { label: 'dark mode', name: 'inDarkMode' },
   { label: 'colored numbers', name: 'coloredNumbers' },
   { label: 'show related', name: 'showRelated' },
   { label: 'highlight number', name: 'highlightNumber' },

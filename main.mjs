@@ -10,26 +10,29 @@ const storage = storageFactory('sdku');
 let b;
 
 const defaultConfig = {
+  inDarkMode: false,
   coloredNumbers: true,
   showRelated: true,
   highlightNumber: true,
   updateCandidates: true,
 };
 
+(() => {
+  try {
+    defaultConfig.inDarkMode = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    ).matches;
+  } catch (_) {}
+})();
+
 const config = storage.getItem('config') || { ...defaultConfig };
+if (config.inDarkMode) {
+  document.body.classList.add('dark');
+}
 
 document.fonts.ready.then(() => {
   b.draw();
 });
-
-let inDarkMode = false;
-try {
-  window.matchMedia('(prefers-color-scheme: dark)').matches;
-} catch (_) {}
-
-if (inDarkMode) {
-  document.body.classList.add('dark');
-}
 
 function scaleUI() {
   const scale = Math.min(...[window.innerWidth, window.innerHeight]) / 1000;
@@ -84,7 +87,6 @@ b = new Board({
   parentEl: document.querySelector('.board'),
   boardWidth: 700,
   config,
-  inDarkMode,
   onClickCell,
   getCellData,
 });
@@ -244,8 +246,14 @@ function actionBegin() {
 }
 
 function actionSettings() {
+  const prevInDarkMode = config.inDarkMode;
   generateSettings(config, () => {
-    console.log('settings done', config);
+    b.draw();
+    storage.setItem('config', config);
+    if (prevInDarkMode !== config.inDarkMode) {
+      document.body.classList.toggle('dark');
+      b.applyTheme();
+    }
     b.draw();
   });
 }
