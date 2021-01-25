@@ -3,7 +3,6 @@ import { themes } from './theme.mjs';
 
 const PI2 = 2 * Math.PI;
 
-//const FONT = 'sans-serif';
 const FONT = 'quicksand';
 
 export const VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -301,8 +300,6 @@ export class Board {
   }
 
   check(logFn) {
-    this.unsetInvalidCells();
-
     let ok = true;
     for (let n = 1; n <= 9; ++n) {
       ok = ok && checkSequence(this.getRowCells(n), `row #${n}`, logFn);
@@ -524,7 +521,7 @@ class Cell {
 
     const isFilled = this.isInvalid || hasSelectedNumber;
     const isSelected = hasSelectedPos;
-    const isReadOnly = this.readOnly;
+    const isReadOnly = !!this.readOnly;
 
     // draw filled circle bg
     if (isFilled) {

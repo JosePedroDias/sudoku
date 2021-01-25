@@ -137,6 +137,7 @@ function onNumber(value) {
 function updateCounters() {
   const selNum = b.getSelectedNumber();
   const hist = b.getValueHistogram();
+  b.unsetInvalidCells();
   for (let n = 1; n <= 9; ++n) {
     const number = numbers.get(n);
     number.setCount(9 - (hist[n] || 0));
