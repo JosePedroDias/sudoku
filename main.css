@@ -49,7 +49,16 @@ div.paused {
   display: none;
 }
 
-body.paused .board {
+div.settings {
+  display: none;
+}
+
+body.settings div.settings {
+  display: block;
+}
+
+body.paused .board,
+body.settings .board {
   display: none;
 }
 

@@ -3,6 +3,7 @@ import { ElapsedTime } from './elapsed-time.mjs';
 import { Board, posEqual } from './board.mjs';
 import { generateNumbers } from './numbers.mjs';
 import { generateActions } from './actions.mjs';
+import { generateSettings } from './settings.mjs';
 
 const storage = storageFactory('sdku');
 
@@ -181,7 +182,6 @@ function actionHints() {
 function actionToggleTheme() {
   document.body.classList.toggle('dark');
   b.toggleThemeDarkness();
-  b.draw();
 }
 
 function actionLoad() {
@@ -243,6 +243,13 @@ function actionBegin() {
   }
 }
 
+function actionSettings() {
+  generateSettings(config, () => {
+    console.log('settings done', config);
+    b.draw();
+  });
+}
+
 function actionNew() {
   b.clear();
   updateCounters();
@@ -260,8 +267,8 @@ function onAction(action) {
     actionNew();
   } else if (action === 'Begin') {
     actionBegin();
-  } else if (action === 'Theme') {
-    actionToggleTheme();
+  } else if (action === 'seTtings') {
+    actionSettings();
   } else if (action === 'Load') {
     actionLoad();
   } else if (action === 'Save') {
@@ -322,6 +329,9 @@ document.body.addEventListener('keydown', (ev) => {
       break;
     case 'KeyB':
       actionBegin();
+      break;
+    case 'KeyT':
+      actionSettings();
       break;
     case 'KeyL':
       actionLoad();

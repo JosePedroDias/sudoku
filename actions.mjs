@@ -50,7 +50,7 @@ export function generateActions(containerEl, onAction) {
     'Undo',
     'New',
     'Begin',
-    'Theme',
+    'seTtings',
     'Load',
     'Save',
     'Hints',
