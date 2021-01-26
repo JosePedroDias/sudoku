@@ -28,9 +28,6 @@
 .icon-pen:before {
   content: '\e908';
 }
-.icon-paint:before {
-  content: '\e90c';
-}
 .icon-generate:before {
   content: '\e915';
 }
@@ -45,6 +42,9 @@
 }
 .icon-undo:before {
   content: '\e965';
+}
+.icon-settings:before {
+  content: '\e992';
 }
 .icon-magic:before {
   content: '\e997';

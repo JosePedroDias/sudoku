@@ -215,7 +215,6 @@ function actionUndo() {
   b.setState(history[history.length - 1]);
 
   updateCounters();
-  unselectNumber();
   b.draw();
 }
 
@@ -275,7 +274,7 @@ function onAction(action) {
     actionNew();
   } else if (action === 'Begin') {
     actionBegin();
-  } else if (action === 'seTtings') {
+  } else if (action === 'Config') {
     actionSettings();
   } else if (action === 'Load') {
     actionLoad();
@@ -338,7 +337,7 @@ document.body.addEventListener('keydown', (ev) => {
     case 'KeyB':
       actionBegin();
       break;
-    case 'KeyT':
+    case 'KeyC':
       actionSettings();
       break;
     case 'KeyL':

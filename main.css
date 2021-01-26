@@ -53,6 +53,15 @@ div.settings {
   display: none;
 }
 
+div.settings label {
+  display: inline-block;
+  min-width: 10em;
+}
+
+div.settings button {
+  padding: 8px;
+}
+
 body.settings div.settings {
   display: block;
 }
@@ -82,14 +91,17 @@ body.paused div.paused {
 .number {
   display: inline-block;
   text-align: center;
+  font-size: 40px;
   width: 80px;
   height: 80px;
+  line-height: 65px;
   background-color: #ddd;
   margin: 2px;
   border-radius: 15px;
   -moz-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+  position: relative;
 }
 
 .number:hover,
@@ -97,12 +109,13 @@ body.paused div.paused {
   background-color: #fdd;
 }
 
-.number-value {
-  font-size: 40px;
-}
-
 .number-count {
+  position: absolute;
+  left: 0;
+  bottom: 5px;
+  width: 100%;
   font-size: 22px;
+  line-height: 22px;
   opacity: 0.5;
 }
 

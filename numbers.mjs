@@ -3,10 +3,6 @@ export class SNumber {
     this.value = value;
     this.count = count;
 
-    const valueEl = document.createElement('div');
-    valueEl.innerHTML = value;
-    valueEl.className = 'number-value';
-
     const countEl = document.createElement('div');
     countEl.innerHTML = count;
     countEl.className = 'number-count';
@@ -15,7 +11,7 @@ export class SNumber {
     this.el = document.createElement('div');
     this.el.setAttribute('data-value', value);
     this.el.className = 'number';
-    this.el.appendChild(valueEl);
+    this.el.appendChild(document.createTextNode('' + value));
     this.el.appendChild(countEl);
     containerEl.appendChild(this.el);
 
