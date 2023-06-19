@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+
+/* eslint-env node */
+
 import { isMainModule } from './utils.mjs';
 import { Board } from './board.mjs';
 import { solveAtOnce } from './solve.mjs';
@@ -14,6 +18,6 @@ function go() {
   console.log(b.getStateAscii());
 }
 
-if (isMainModule(import.meta)) {
+if (isMainModule(import.meta.url)) {
   go();
 }

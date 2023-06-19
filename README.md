@@ -2,7 +2,7 @@
 
 ## Motivation
 
-A sudoku browser game in recent JS, drawn in canvas. Hopefully mobile friendly.  
+A sudoku browser game in recent JS, drawn in canvas. Hopefully mobile friendly.
 The UX is somewhat inspired in [Sudoku, the Clean One](https://play.google.com/store/apps/details?id=ee.dustland.android.dustlandsudoku).
 
 ## References
@@ -35,7 +35,7 @@ The UX is somewhat inspired in [Sudoku, the Clean One](https://play.google.com/s
     npm i -g --only=prod https-localhost
 
     npx https-localhost (prefix with sudo if in linux)
-    visit: https://localhost/
+    visit: https://localhost/ https://localhost/generate.html
 
 ## Remote HTTPS Dev
 

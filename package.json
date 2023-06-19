@@ -13,20 +13,20 @@
   },
   "scripts": {
     "run": "npx https-localhost",
-    "generate": "node --experimental-modules generate.mjs",
-    "solve": "node --experimental-modules solve.mjs",
+    "generate": "node generate.mjs",
+    "solve": "node solve.mjs",
     "test": "tap"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=18.16"
   },
   "dependencies": {
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-plugin-import": "~2.27.5"
   },
   "devDependencies": {
-    "eslint": "^7.18.0",
-    "prettier": "^2.2.1",
-    "tap": "^14.11.0"
+    "eslint": "~8.43.0",
+    "prettier": "~2.8.8",
+    "tap": "~16.3.6"
   },
   "prettier": {
     "trailingComma": "es5",

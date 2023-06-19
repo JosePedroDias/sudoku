@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url';
+
 let seed = 0;
 
 export function unsetSeed() {
@@ -139,12 +141,7 @@ export function record(...args) {
 }
 record.calls = [];
 
-// kinda lame approach but works for differently named files in lack of better idea O:)
-export function isMainModule(importMeta) {
-  if (importMeta.url.indexOf('http' === 0)) {
-    return false;
-  }
-  const a = importMeta.url.split('/').pop();
-  const b = process.argv[process.argv.length - 1].split('/').pop();
-  return a === b;
+export function isMainModule(url) {
+  const modulePath = fileURLToPath(url);
+  return process.argv[1] === modulePath;
 }

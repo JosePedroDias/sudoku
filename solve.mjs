@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+
+/* eslint-env node */
+
 import { sort, shuffleArray, isMainModule } from './utils.mjs';
 import { Board } from './board.mjs';
 
@@ -127,6 +131,6 @@ function go() {
   console.log(s);
 }
 
-if (isMainModule(import.meta)) {
+if (isMainModule(import.meta.url)) {
   go();
 }
