@@ -1,5 +1,3 @@
-import { fileURLToPath } from 'node:url';
-
 let seed = 0;
 
 export function unsetSeed() {
@@ -141,7 +139,11 @@ export function record(...args) {
 }
 record.calls = [];
 
-export function isMainModule(url) {
+export async function isMainModule(url) {
+  if (globalThis.window) return false;
+
+  const fileURLToPath = (await import('node:url')).fileURLToPath;
+
   const modulePath = fileURLToPath(url);
   return process.argv[1] === modulePath;
 }

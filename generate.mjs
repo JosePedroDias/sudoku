@@ -18,6 +18,6 @@ function go() {
   console.log(b.getStateAscii());
 }
 
-if (isMainModule(import.meta.url)) {
+if (await isMainModule(import.meta.url)) {
   go();
 }

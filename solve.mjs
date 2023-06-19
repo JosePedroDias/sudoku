@@ -131,6 +131,6 @@ function go() {
   console.log(s);
 }
 
-if (isMainModule(import.meta.url)) {
+if (await isMainModule(import.meta.url)) {
   go();
 }
